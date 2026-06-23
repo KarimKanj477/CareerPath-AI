@@ -4,7 +4,7 @@
 
 CareerPath AI is an intelligent career guidance and skill development platform designed to help students, graduates, and professionals identify the skills required for their desired careers and create personalized learning roadmaps.
 
-The platform analyzes the gap between a user's current skills and the skills required for a target job role, then generates a structured learning path along with recommended resources to help the user achieve their career goals.
+The platform analyzes the gap between a user's current skills and the skills required for a target job role, then generates a structured learning path along with recommended learning resources to help users achieve their career goals efficiently.
 
 ---
 
@@ -49,24 +49,22 @@ Users can explore various career fields and specializations, including:
 * Digital Marketing
 * Project Management
 
-Each career includes descriptions, responsibilities, required skills, and industry insights.
+Each career includes descriptions, responsibilities, required skills, industry insights, and learning pathways.
 
 ### Skill Assessment
 
-Users can enter their current:
+Users can enter and manage their:
 
 * Technical skills
 * Soft skills
 * Certifications
 * Experience level
 
-The system stores and manages the user's skill profile.
+The system maintains a personalized skill profile for each user.
 
 ### Skill Gap Analysis
 
-The platform compares the user's current skills with the skills required for a selected career path.
-
-The system then identifies:
+The platform compares a user's current skills with the skills required for a selected career path and identifies:
 
 * Existing skills
 * Missing skills
@@ -74,18 +72,18 @@ The system then identifies:
 
 ### Personalized Roadmap Generation
 
-Based on the skill gap analysis, CareerPath AI generates a customized roadmap consisting of learning phases and milestones.
+Based on the skill gap analysis, CareerPath AI generates a customized roadmap consisting of learning phases, milestones, and recommended activities.
 
 ### Learning Resource Recommendations
 
-The system recommends learning resources based on user preferences:
+The system recommends learning resources according to user preferences:
 
 * Free resources
 * Paid resources
 * Online courses
 * Documentation
 * Tutorials
-* Videos
+* Educational videos
 
 ### AI Career Advisor
 
@@ -96,9 +94,9 @@ An AI-powered chatbot assists users by answering career-related questions and pr
 Users can monitor:
 
 * Completed skills
-* Current learning progress
+* Skills currently in progress
 * Roadmap completion percentage
-* Achievements and milestones
+* Learning milestones and achievements
 
 ---
 
@@ -116,9 +114,10 @@ Users can monitor:
 
 ### Frontend
 
+* React
+* TypeScript
 * HTML5
 * CSS3
-* JavaScript
 * Bootstrap
 
 ### Backend
@@ -131,12 +130,47 @@ Users can monitor:
 
 ### AI Integration
 
-* OpenAI API / Gemini API
+* Google Gemini API
 
-### Version Control
+### Development & Collaboration Tools
 
-* Git
-* GitHub
+* Git & GitHub
+* GitHub Actions (CI/CD)
+* Jira
+* Postman
+* Docker
+
+---
+
+## Database
+
+The application uses MySQL to store and manage user data, career information, skills, learning resources, and personalized learning roadmaps.
+
+### Main Entities
+
+* Users
+* Roles
+* Careers
+* Skills
+* UserSkills
+* CareerSkills
+* Roadmaps
+* RoadmapSteps
+* LearningResources
+* ProgressTracking
+
+---
+
+## Project Workflow
+
+1. User creates an account and logs in.
+2. User selects a target career or specialization.
+3. User enters their current skills and experience.
+4. The system analyzes the skill gap.
+5. Missing skills are identified.
+6. A personalized learning roadmap is generated.
+7. AI recommends relevant learning resources.
+8. User tracks progress and updates completed skills.
 
 ---
 
@@ -163,24 +197,28 @@ CareerPath-AI/
 
 ### Team Members
 
-* Member 1 : Leen ElBaba
-* Member 2 : Kawthar Tleis
-* Member 3 : Mohamad Al Sayed
-* Member 4 : Mohamad yahfoufe
+* Leen ElBaba
+* Kawthar Tleis
+* Mohamad Al Sayed
+* Mohamad Yahfoufe
 
 ---
 
 ## Development Methodology
 
-The project will be developed using a collaborative team-based approach with task distribution, code reviews, and version control through GitHub.
+The project follows a collaborative Agile development approach.
+
+Team members will use GitHub for version control and Jira for project management, task assignment, and progress tracking.
+
+Development will be organized into milestones with regular testing, code reviews, and continuous integration throughout the project lifecycle.
 
 ---
 
 ## Project Status
 
-Current Phase: Planning & Repository Setup
+**Current Phase:** Planning & Repository Setup
 
-
+**Implementation Start Date:** Monday
 
 ---
 
@@ -192,6 +230,8 @@ Current Phase: Planning & Repository Setup
 * Certification Suggestions
 * Advanced AI Career Coaching
 * Learning Analytics Dashboard
+* Personalized Career Readiness Score
+* Industry Trend Insights
 
 ---
 
