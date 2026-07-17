@@ -52,8 +52,7 @@ public class RoleServiceImpl implements RoleService {
     public void deleteRole(Integer id) {
 
         Role role = roleRepository.findById(id)
-                .orElseThrow(() ->
-                        new RoleNotFoundException("Role with id " + id + " was not found.")
+                .orElseThrow(() -> new RoleNotFoundException("Role with id " + id + " was not found.")
                 );
 
         roleRepository.delete(role);
