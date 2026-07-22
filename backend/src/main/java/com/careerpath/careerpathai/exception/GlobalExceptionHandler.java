@@ -30,22 +30,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RoleNotFoundException.class)
     public ResponseEntity<ApiResponse<Object>> handleRoleNotFound(RoleNotFoundException ex) {
 
-        ApiResponse<Object> response = new ApiResponse<>(
-                false,
-                ex.getMessage(),
-                null
-        );
+        ApiResponse<Object> response = new ApiResponse<>(false, ex.getMessage(), null);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
     @ExceptionHandler(RoleAlreadyExistsException.class)
     public ResponseEntity<ApiResponse<Object>> handleRoleAlreadyExists(RoleAlreadyExistsException ex) {
 
-        ApiResponse<Object> response = new ApiResponse<>(
-                false,
-                ex.getMessage(),
-                null
-        );
+        ApiResponse<Object> response = new ApiResponse<>(false, ex.getMessage(), null);
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
@@ -68,6 +60,35 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
+
+    @ExceptionHandler(SkillNotFoundException.class)
+    public ResponseEntity<ApiResponse<Object>> handleSkillNotFound(SkillNotFoundException exception) {
+
+        ApiResponse<Object> response = new ApiResponse<>(false, exception.getMessage(), null);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(SkillAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse<Object>> handleSkillAlreadyExists(SkillAlreadyExistsException exception) {
+
+        ApiResponse<Object> response = new ApiResponse<>(false, exception.getMessage(), null);
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiResponse<Object>>handleUserNotFound(UserNotFoundException exception){
+        ApiResponse<Object> response= new ApiResponse<>(false,exception.getMessage(),null);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse<Object>>handleUserAlreadyExists(UserAlreadyExistsException exception){
+        ApiResponse<Object> response= new ApiResponse<>(false,exception.getMessage(),null);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
 
 
 

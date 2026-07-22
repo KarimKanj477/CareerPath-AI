@@ -1,27 +1,28 @@
 package com.careerpath.careerpathai.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+public class SkillResponseDTO {
 
-public class SkillRequestDTO {
-
-    @NotBlank(message = "Skill name is required.")
-    @Size(max = 100, message = "Skill name cannot exceed 100 characters.")
+    private Integer id;
     private String name;
-
-    @Size(max = 255, message = "Description cannot exceed 255 characters.")
     private String description;
-
-    @Size(max = 100, message = "Category cannot exceed 100 characters.")
     private String category;
 
-    public SkillRequestDTO() {
+    public SkillResponseDTO() {
     }
 
-    public SkillRequestDTO(String name, String description, String category) {
+    public SkillResponseDTO(Integer id, String name, String description, String category) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.category = category;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

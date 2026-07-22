@@ -1,12 +1,21 @@
 package com.careerpath.careerpathai.service;
 
-import com.careerpath.careerpathai.entity.Skill;
+import com.careerpath.careerpathai.dto.SkillRequestDTO;
+import com.careerpath.careerpathai.dto.SkillResponseDTO;
 
 import java.util.List;
 
 public interface SkillService {
 
-    List<Skill> getAllSkills();
+    List<SkillResponseDTO> getAllSkills();
 
-    Skill getSkillById(Integer id);
+    SkillResponseDTO getSkillById(Integer id);
+
+    SkillResponseDTO createSkill(SkillRequestDTO requestDTO);
+
+    SkillResponseDTO updateSkill(Integer id, SkillRequestDTO requestDTO);
+
+    void deleteSkill(Integer id);
+
+    List<SkillResponseDTO> searchSkillsByName(String name);
 }
