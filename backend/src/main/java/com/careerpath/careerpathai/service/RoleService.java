@@ -10,6 +10,7 @@ public interface RoleService {
     Role getRoleById(Integer id);
 
     Role saveRole(Role role);
+    Role updateRole(Integer id, Role role);
 
     void deleteRole(Integer id);
     List<Role> searchRolesByName(String name);

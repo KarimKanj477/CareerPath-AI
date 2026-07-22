@@ -85,12 +85,39 @@ public class RoleController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-    @PutMapping("/{id}")
-    public Role updateRole(@PathVariable Integer id,
-                           @Valid @RequestBody Role role) {
 
-        role.setId(id);
-        return roleService.saveRole(role);
+    // FIX: was `updateRole(@PathVariable Integer id, @Valid @RequestBody Role role)`
+    // calling `roleService.saveRole(role)`. Three problems fixed here:
+    //   1. Accepted the raw JPA entity as the request body instead of a DTO —
+    //      Role has no Bean Validation annotations, so @Valid was a no-op.
+    //   2. Reused saveRole() (create logic), which always throws
+    //      RoleAlreadyExistsException on update unless the name also changed.
+    //   3. Returned the raw entity instead of the same ApiResponse<DTO> shape
+    //      every other endpoint in this controller uses.
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<RoleResponseDTO>> updateRole(
+            @PathVariable Integer id,
+            @Valid @RequestBody RoleRequestDTO roleRequestDTO) {
+
+        Role role = new Role();
+        role.setName(roleRequestDTO.getName());
+        role.setDescription(roleRequestDTO.getDescription());
+
+        Role updatedRole = roleService.updateRole(id, role);
+
+        RoleResponseDTO responseDTO = new RoleResponseDTO(
+                updatedRole.getId(),
+                updatedRole.getName(),
+                updatedRole.getDescription()
+        );
+
+        ApiResponse<RoleResponseDTO> response = new ApiResponse<>(
+                true,
+                "Role updated successfully",
+                responseDTO
+        );
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
