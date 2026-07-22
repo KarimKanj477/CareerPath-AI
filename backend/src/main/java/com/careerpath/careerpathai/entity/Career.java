@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "careers")
-
 public class Career {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +18,16 @@ public class Career {
     @Column(name = "category", length = 100)
     private String category;
 
-    @Column(name = "average_salary")
+    // FIX: was "average_salary" (snake_case) — the actual DB column is
+    // "averageSalary" (camelCase, no underscore). With ddl-auto=none,
+    // Hibernate does not create/rename columns, so the mismatched name
+    // caused an "Unknown column 'average_salary'" SQL error on every
+    // Career read/write.
+    @Column(name = "averageSalary")
     private Double averageSalary;
 
-    @Column(name = "demand_level", length = 50)
+    // FIX: same issue — was "demand_level", DB column is "demandLevel".
+    @Column(name = "demandLevel", length = 50)
     private String demandLevel;
 
 
