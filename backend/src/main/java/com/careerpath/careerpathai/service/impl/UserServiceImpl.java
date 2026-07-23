@@ -10,6 +10,7 @@ import com.careerpath.careerpathai.exception.UserNotFoundException;
 import com.careerpath.careerpathai.repository.RoleRepository;
 import com.careerpath.careerpathai.repository.UserRepository;
 import com.careerpath.careerpathai.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -21,10 +22,12 @@ public class UserServiceImpl implements UserService {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     private Role getRoleEntityById(Integer roleId) {
@@ -48,7 +51,6 @@ public class UserServiceImpl implements UserService {
         user.setFirstname(requestDTO.getFirstname());
         user.setLastname(requestDTO.getLastname());
         user.setEmail(requestDTO.getEmail());
-        user.setPassword(requestDTO.getPassword());
         user.setExperienceLevel(requestDTO.getExperienceLevel());
         user.setRole(role);
 
@@ -91,6 +93,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = mapToEntity(requestDTO);
+        user.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
 
         User savedUser = userRepository.save(user);
 
@@ -113,7 +116,7 @@ public class UserServiceImpl implements UserService {
         existingUser.setFirstname(requestDTO.getFirstname());
         existingUser.setLastname(requestDTO.getLastname());
         existingUser.setEmail(requestDTO.getEmail());
-        existingUser.setPassword(requestDTO.getPassword());
+        existingUser.setPassword(passwordEncoder.encode(requestDTO.getPassword()));
         existingUser.setExperienceLevel(requestDTO.getExperienceLevel());
         existingUser.setRole(role);
 
