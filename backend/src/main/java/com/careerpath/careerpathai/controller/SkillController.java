@@ -1,7 +1,9 @@
 package com.careerpath.careerpathai.controller;
 
+import com.careerpath.careerpathai.dto.ApiResponse;
 import com.careerpath.careerpathai.entity.Skill;
 import com.careerpath.careerpathai.service.SkillService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +19,12 @@ public class SkillController {
     }
 
     @GetMapping
-    public List<Skill> getAllSkills() {
-        return skillService.getAllSkills();
+    public ResponseEntity<ApiResponse<List<Skill>>> getAllSkills() {
+        return ResponseEntity.ok(new ApiResponse<>(true, "Skills retrieved successfully", skillService.getAllSkills()));
     }
 
     @GetMapping("/{id}")
-    public Skill getSkillById(@PathVariable Integer id) {
-        return skillService.getSkillById(id);
+    public ResponseEntity<ApiResponse<Skill>> getSkillById(@PathVariable Integer id) {
+        return ResponseEntity.ok(new ApiResponse<>(true, "Skill retrieved successfully", skillService.getSkillById(id)));
     }
 }
