@@ -26,8 +26,8 @@ public class RoleController {
     }
 
     @GetMapping
-    public Page<Role> getAllRoles(
-            @RequestParam(defaultValue = "0")int page ,
+    public ResponseEntity<ApiResponse<Page<Role>>> getAllRoles(
+            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
@@ -37,7 +37,7 @@ public class RoleController {
                 : Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
-        return roleService.getAllRoles(pageable);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Roles retrieved successfully", roleService.getAllRoles(pageable)));
     }
 
     @GetMapping("/{id}")
@@ -134,12 +134,7 @@ public class RoleController {
         return ResponseEntity.ok(response);
     }
     @GetMapping("/search")
-    public List<Role> searchRoles(
-            @RequestParam String name
-    )
-    {
-
-        return roleService.searchRolesByName(name);
-
+    public ResponseEntity<ApiResponse<List<Role>>> searchRoles(@RequestParam String name) {
+        return ResponseEntity.ok(new ApiResponse<>(true, "Roles found successfully", roleService.searchRolesByName(name)));
     }
 }
