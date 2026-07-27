@@ -1,8 +1,6 @@
 package com.careerpath.careerpathai.controller;
 
-import com.careerpath.careerpathai.dto.ApiResponse;
-import com.careerpath.careerpathai.dto.RegisterRequestDTO;
-import com.careerpath.careerpathai.dto.UserResponseDTO;
+import com.careerpath.careerpathai.dto.*;
 import com.careerpath.careerpathai.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -31,4 +29,17 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<AuthResponseDTO>> login(
+            @Valid @RequestBody LoginRequestDTO requestDTO) {
+
+        AuthResponseDTO authResponse = authService.login(requestDTO);
+
+        ApiResponse<AuthResponseDTO> response =
+                new ApiResponse<>(true, "Login successful", authResponse);
+
+        return ResponseEntity.ok(response);
+    }
+
 }

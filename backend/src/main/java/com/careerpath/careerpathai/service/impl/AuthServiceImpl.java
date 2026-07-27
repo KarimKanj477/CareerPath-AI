@@ -1,5 +1,7 @@
 package com.careerpath.careerpathai.service.impl;
 
+import com.careerpath.careerpathai.dto.AuthResponseDTO;
+import com.careerpath.careerpathai.dto.LoginRequestDTO;
 import com.careerpath.careerpathai.dto.RegisterRequestDTO;
 import com.careerpath.careerpathai.dto.UserResponseDTO;
 import com.careerpath.careerpathai.entity.Role;
@@ -9,6 +11,7 @@ import com.careerpath.careerpathai.exception.UserAlreadyExistsException;
 import com.careerpath.careerpathai.repository.RoleRepository;
 import com.careerpath.careerpathai.repository.UserRepository;
 import com.careerpath.careerpathai.service.AuthService;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -54,5 +57,22 @@ public class AuthServiceImpl implements AuthService {
 
         return new UserResponseDTO(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(),
                 user.getExperienceLevel(), user.getCreatedAt(), user.getRole().getId(), user.getRole().getName());
+    }
+
+    @Override
+    public AuthResponseDTO login(LoginRequestDTO requestDTO) {
+
+        User user = userRepository.findByEmail(requestDTO.getEmail())
+                .orElseThrow(() -> new BadCredentialsException("Invalid email or password"));
+
+        boolean passwordMatches = passwordEncoder.matches(requestDTO.getPassword(), user.getPassword());
+
+        if (!passwordMatches) {
+            throw new BadCredentialsException("Invalid email or password");
+        }
+
+        UserResponseDTO userResponseDTO = mapToResponseDTO(user);
+
+        return new AuthResponseDTO(userResponseDTO);
     }
 }
