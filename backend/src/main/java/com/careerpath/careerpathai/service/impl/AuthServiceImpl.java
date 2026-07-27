@@ -10,6 +10,7 @@ import com.careerpath.careerpathai.exception.RoleNotFoundException;
 import com.careerpath.careerpathai.exception.UserAlreadyExistsException;
 import com.careerpath.careerpathai.repository.RoleRepository;
 import com.careerpath.careerpathai.repository.UserRepository;
+import com.careerpath.careerpathai.security.JwtService;
 import com.careerpath.careerpathai.service.AuthService;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,11 +22,13 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public AuthServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder,JwtService jwtService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -73,6 +76,12 @@ public class AuthServiceImpl implements AuthService {
 
         UserResponseDTO userResponseDTO = mapToResponseDTO(user);
 
-        return new AuthResponseDTO(userResponseDTO);
+        String token = jwtService.generateToken(
+                user.getEmail(),
+                user.getRole().getName()
+        );
+
+        return new AuthResponseDTO(token, "Bearer", userResponseDTO
+        );
     }
 }

@@ -1,13 +1,34 @@
 package com.careerpath.careerpathai.dto;
 
 public class AuthResponseDTO {
+
+    private String token;
+    private String tokenType;
     private UserResponseDTO user;
 
     public AuthResponseDTO() {
     }
 
-    public AuthResponseDTO(UserResponseDTO user) {
+    public AuthResponseDTO(String token, String tokenType, UserResponseDTO user) {
+        this.token = token;
+        this.tokenType = tokenType;
         this.user = user;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
     }
 
     public UserResponseDTO getUser() {
