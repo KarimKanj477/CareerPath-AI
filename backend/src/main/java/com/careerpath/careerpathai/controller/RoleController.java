@@ -15,19 +15,24 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-@RestController //handles HTTP requests
+
+@RestController // handles HTTP requests
 @RequestMapping("/api/roles")
 public class RoleController {
 
     private final RoleService roleService;
 
-    public RoleController(RoleService roleService) { //Dependency Injection
+    public RoleController(RoleService roleService) { // Dependency Injection
         this.roleService = roleService;
     }
 
+    private RoleResponseDTO toResponseDTO(Role role) {
+        return new RoleResponseDTO(role.getId(), role.getName(), role.getDescription());
+    }
+
     @GetMapping
-    public Page<Role> getAllRoles(
-            @RequestParam(defaultValue = "0")int page ,
+    public ResponseEntity<ApiResponse<Page<RoleResponseDTO>>> getAllRoles(
+            @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
@@ -37,7 +42,16 @@ public class RoleController {
                 : Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
-        return roleService.getAllRoles(pageable);
+        Page<RoleResponseDTO> rolePage = roleService.getAllRoles(pageable)
+                .map(this::toResponseDTO);
+
+        ApiResponse<Page<RoleResponseDTO>> response = new ApiResponse<>(
+                true,
+                "Roles retrieved successfully",
+                rolePage
+        );
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
@@ -46,54 +60,34 @@ public class RoleController {
 
         Role role = roleService.getRoleById(id);
 
-        RoleResponseDTO responseDTO = new RoleResponseDTO(
-                role.getId(),
-                role.getName(),
-                role.getDescription()
-        );
-
         ApiResponse<RoleResponseDTO> response = new ApiResponse<>(
                 true,
                 "Role retrieved successfully",
-                responseDTO
+                toResponseDTO(role)
         );
 
         return ResponseEntity.ok(response);
     }
+
     @PostMapping
     public ResponseEntity<ApiResponse<RoleResponseDTO>> createRole(
             @Valid @RequestBody RoleRequestDTO roleRequestDTO) {
 
         Role role = new Role();
-
         role.setName(roleRequestDTO.getName());
         role.setDescription(roleRequestDTO.getDescription());
 
         Role savedRole = roleService.saveRole(role);
 
-        RoleResponseDTO responseDTO = new RoleResponseDTO(
-                savedRole.getId(),
-                savedRole.getName(),
-                savedRole.getDescription()
-        );
-
         ApiResponse<RoleResponseDTO> response = new ApiResponse<>(
                 true,
                 "Role created successfully",
-                responseDTO
+                toResponseDTO(savedRole)
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    // FIX: was `updateRole(@PathVariable Integer id, @Valid @RequestBody Role role)`
-    // calling `roleService.saveRole(role)`. Three problems fixed here:
-    //   1. Accepted the raw JPA entity as the request body instead of a DTO —
-    //      Role has no Bean Validation annotations, so @Valid was a no-op.
-    //   2. Reused saveRole() (create logic), which always throws
-    //      RoleAlreadyExistsException on update unless the name also changed.
-    //   3. Returned the raw entity instead of the same ApiResponse<DTO> shape
-    //      every other endpoint in this controller uses.
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<RoleResponseDTO>> updateRole(
             @PathVariable Integer id,
@@ -105,16 +99,10 @@ public class RoleController {
 
         Role updatedRole = roleService.updateRole(id, role);
 
-        RoleResponseDTO responseDTO = new RoleResponseDTO(
-                updatedRole.getId(),
-                updatedRole.getName(),
-                updatedRole.getDescription()
-        );
-
         ApiResponse<RoleResponseDTO> response = new ApiResponse<>(
                 true,
                 "Role updated successfully",
-                responseDTO
+                toResponseDTO(updatedRole)
         );
 
         return ResponseEntity.ok(response);
@@ -133,13 +121,21 @@ public class RoleController {
 
         return ResponseEntity.ok(response);
     }
+
     @GetMapping("/search")
-    public List<Role> searchRoles(
-            @RequestParam String name
-    )
-    {
+    public ResponseEntity<ApiResponse<List<RoleResponseDTO>>> searchRoles(
+            @RequestParam String name) {
 
-        return roleService.searchRolesByName(name);
+        List<RoleResponseDTO> responseDTOs = roleService.searchRolesByName(name).stream()
+                .map(this::toResponseDTO)
+                .toList();
 
+        ApiResponse<List<RoleResponseDTO>> response = new ApiResponse<>(
+                true,
+                "Roles found successfully",
+                responseDTOs
+        );
+
+        return ResponseEntity.ok(response);
     }
 }

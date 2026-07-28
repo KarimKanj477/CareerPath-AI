@@ -14,7 +14,8 @@ import com.careerpath.careerpathai.dto.ApiResponse;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> handleValidationErrors(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiResponse<Map<String, String>>> handleValidationErrors(
+            MethodArgumentNotValidException ex) {
 
         Map<String, String> errors = new HashMap<>();
 
@@ -22,7 +23,13 @@ public class GlobalExceptionHandler {
                 errors.put(error.getField(), error.getDefaultMessage())
         );
 
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        ApiResponse<Map<String, String>> response = new ApiResponse<>(
+                false,
+                "Validation failed",
+                errors
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(RoleNotFoundException.class)
@@ -53,8 +60,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Object>> handleCareerNotFound(
             CareerNotFoundException exception) {
 
-        ApiResponse<Object> response = new ApiResponse<>(false, exception.getMessage(),
-                null);
+        ApiResponse<Object> response = new ApiResponse<>(false, exception.getMessage(), null);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
@@ -63,29 +69,35 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Object>> handleCareerAlreadyExists(
             CareerAlreadyExistsException exception) {
 
-        ApiResponse<Object> response = new ApiResponse<>(false, exception.getMessage(),
-                null);
+        ApiResponse<Object> response = new ApiResponse<>(false, exception.getMessage(), null);
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
-    // FIX (new): Skill lookups now throw a proper custom exception —
-    // this is the handler that turns it into a clean 404 instead of
-    // Spring's default error page.
     @ExceptionHandler(SkillNotFoundException.class)
     public ResponseEntity<ApiResponse<Object>> handleSkillNotFound(
             SkillNotFoundException exception) {
 
-        ApiResponse<Object> response = new ApiResponse<>(false, exception.getMessage(),
-                null);
+        ApiResponse<Object> response = new ApiResponse<>(false, exception.getMessage(), null);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
-    // FIX (new): catch-all so any exception we didn't anticipate (DB
-    // hiccup, unexpected constraint violation, etc.) returns our
-    // ApiResponse shape with a generic message instead of Spring's
-    // default whitelabel error page, which can leak a stack trace.
+    // NEW: handler for duplicate skill names on create/update, mirroring
+    // Career/Role's already-exists handling.
+    @ExceptionHandler(SkillAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse<Object>> handleSkillAlreadyExists(
+            SkillAlreadyExistsException exception) {
+
+        ApiResponse<Object> response = new ApiResponse<>(false, exception.getMessage(), null);
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    // Catch-all so any exception we didn't anticipate (DB hiccup, unexpected
+    // constraint violation, etc.) returns our ApiResponse shape with a
+    // generic message instead of Spring's default whitelabel error page,
+    // which can leak a stack trace.
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleGeneric(Exception exception) {
 
