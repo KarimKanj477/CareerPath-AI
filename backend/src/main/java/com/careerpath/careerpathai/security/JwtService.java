@@ -1,5 +1,7 @@
 package com.careerpath.careerpathai.security;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -27,6 +29,13 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(getSigningKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
 
     public String generateToken(String email, String roleName) {
 
@@ -42,4 +51,27 @@ public class JwtService {
                 .signWith(getSigningKey())
                 .compact();
     }
+
+    public String extractEmail(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+    public String extractRole(String token) {
+        return extractAllClaims(token)
+                .get("role", String.class);
+    }
+
+    public boolean isTokenValid(String token, String expectedEmail) {
+        try {
+            Claims claims = extractAllClaims(token);
+
+            String tokenEmail = claims.getSubject();
+            Date expiration = claims.getExpiration();
+
+            return expectedEmail.equals(tokenEmail) && expiration.after(new Date());
+
+        } catch (JwtException | IllegalArgumentException exception) {
+            return false;
+        }
+    }
+
 }
