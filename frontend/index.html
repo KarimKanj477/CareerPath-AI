@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareerPath AI — Chart your route</title>
+  <meta name="description" content="Explore careers, catalogue your skills, and chart the route from where you are to where you want to be." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============ NAV ============ -->
+  <nav class="topbar">
+    <div class="topbar-inner">
+      <a href="#top" class="brand">
+        <span class="compass" aria-hidden="true">
+          <svg viewBox="0 0 40 40" width="28" height="28">
+            <circle cx="20" cy="20" r="17.5" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M20 9 L24 20 L20 31 L16 20 Z" fill="currentColor"/>
+            <circle cx="20" cy="20" r="2" fill="var(--parchment)"/>
+          </svg>
+        </span>
+        <span class="brand-word">CareerPath<em>AI</em></span>
+      </a>
+      <ul class="topnav">
+        <li><a href="#route">The Route</a></li>
+        <li><a href="#careers">Careers</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero" id="top">
+    <div class="hero-contours" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <p class="eyebrow">A field guide for the undecided</p>
+      <h1 class="hero-title">Every career<br/>is a route.<br/><span class="hero-title-accent">Let's plot yours.</span></h1>
+      <p class="hero-sub">Search a role, see what it actually takes to get there, and log the skills you've already picked up along the way.</p>
+
+      <form class="hero-search" id="hero-search-form" role="search">
+        <label for="hero-search-input" class="visually-hidden">Search a career</label>
+        <svg class="hero-search-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <line x1="15.5" y1="15.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input id="hero-search-input" type="text" placeholder="Where does your path lead? Try “Data Analyst”" autocomplete="off" />
+        <button type="submit">Chart it</button>
+      </form>
+
+      <p class="hero-stats" id="hero-stats" aria-live="polite">Loading the map…</p>
+    </div>
+  </header>
+
+  <!-- ============ THE ROUTE ============ -->
+  <section class="route-section" id="route">
+    <div class="section-head">
+      <p class="eyebrow">Waypoint 1 of 4</p>
+      <h2>The route so far</h2>
+      <p class="section-sub">CareerPath AI is being built one leg of the journey at a time. Here's the full trail — and where the map currently ends.</p>
+    </div>
+
+    <ol class="trail">
+      <li class="trail-stop trail-stop--live">
+        <span class="trail-pin">01</span>
+        <div class="trail-copy">
+          <h3>Explore careers</h3>
+          <p>Browse the catalogue, filter by field and demand, and see what a role actually pays and requires.</p>
+          <span class="trail-status trail-status--live">Live below</span>
+        </div>
+      </li>
+      <li class="trail-stop trail-stop--live">
+        <span class="trail-pin">02</span>
+        <div class="trail-copy">
+          <h3>Catalogue your skills</h3>
+          <p>Log what you already know — languages, tools, frameworks, the soft skills too.</p>
+          <span class="trail-status trail-status--live">Live below</span>
+        </div>
+      </li>
+      <li class="trail-stop trail-stop--soon">
+        <span class="trail-pin">03</span>
+        <div class="trail-copy">
+          <h3>Spot the gap</h3>
+          <p>Compare your skills against a target career and see exactly what's missing.</p>
+          <span class="trail-status trail-status--soon">Further down the trail</span>
+        </div>
+      </li>
+      <li class="trail-stop trail-stop--soon">
+        <span class="trail-pin">04</span>
+        <div class="trail-copy">
+          <h3>Follow the roadmap</h3>
+          <p>Get a step-by-step learning path with resources, and track progress as you go.</p>
+          <span class="trail-status trail-status--soon">Further down the trail</span>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============ CAREERS ============ -->
+  <section class="catalog-section" id="careers">
+    <div class="section-head">
+      <p class="eyebrow">Waypoint 1</p>
+      <h2>Explore careers</h2>
+      <p class="section-sub">Every entry below is pulled live from the CareerPath AI catalogue.</p>
+    </div>
+
+    <div class="catalog-controls">
+      <div class="search-box">
+        <input type="text" id="career-search" placeholder="Search by title…" autocomplete="off" />
+      </div>
+      <div class="chip-row" id="career-demand-filter">
+        <button class="chip is-active" data-demand="ALL">All demand</button>
+        <button class="chip" data-demand="HIGH">High</button>
+        <button class="chip" data-demand="MEDIUM">Medium</button>
+        <button class="chip" data-demand="LOW">Low</button>
+      </div>
+      <select class="category-select" id="career-category-filter">
+        <option value="ALL">All categories</option>
+      </select>
+
+      <div class="manage-toggle">
+        <label class="switch">
+          <input type="checkbox" id="career-manage-toggle" />
+          <span class="switch-track"></span>
+        </label>
+        <span>Manage catalog</span>
+      </div>
+    </div>
+    <p class="manage-note" id="career-manage-note" hidden>
+      No accounts yet, so anyone with Manage mode on can edit the shared catalogue. Handle with care.
+      <button class="btn-ghost-inline" id="career-add-btn">+ Chart a new career</button>
+    </p>
+
+    <div class="grid" id="career-grid" aria-live="polite">
+      <div class="state-card state-card--loading">Charting the map…</div>
+    </div>
+  </section>
+
+  <!-- ============ SKILLS ============ -->
+  <section class="catalog-section catalog-section--alt" id="skills">
+    <div class="section-head">
+      <p class="eyebrow">Waypoint 2</p>
+      <h2>Skill catalogue</h2>
+      <p class="section-sub">Every skill a career might ask for, grouped by field.</p>
+    </div>
+
+    <div class="catalog-controls">
+      <div class="search-box">
+        <input type="text" id="skill-search" placeholder="Search a skill…" autocomplete="off" />
+      </div>
+      <select class="category-select" id="skill-category-filter">
+        <option value="ALL">All categories</option>
+      </select>
+
+      <div class="manage-toggle">
+        <label class="switch">
+          <input type="checkbox" id="skill-manage-toggle" />
+          <span class="switch-track"></span>
+        </label>
+        <span>Manage catalog</span>
+      </div>
+    </div>
+    <p class="manage-note" id="skill-manage-note" hidden>
+      Same deal here — no login yet, so treat Manage mode gently.
+      <button class="btn-ghost-inline" id="skill-add-btn">+ Log a new skill</button>
+    </p>
+
+    <div class="tag-grid" id="skill-grid" aria-live="polite">
+      <div class="state-card state-card--loading">Sorting the field notes…</div>
+    </div>
+  </section>
+
+  <!-- ============ ABOUT ============ -->
+  <section class="about-section" id="about">
+    <div class="about-inner">
+      <p class="eyebrow">Field notes</p>
+      <h2>Why this exists</h2>
+      <p>
+        Choosing a career shouldn't mean guessing. CareerPath AI is being built to help students,
+        graduates, and professionals see the honest distance between where they are and where they
+        want to go — then close it, one skill at a time.
+      </p>
+      <p class="about-credit">
+        Built by Karim Kanj, Leen ElBaba, Kawthar Tleis, Mohamad Al Sayed &amp; Mohamad Yahfoufe.
+      </p>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span class="compass" aria-hidden="true">
+        <svg viewBox="0 0 40 40" width="20" height="20">
+          <circle cx="20" cy="20" r="17.5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M20 9 L24 20 L20 31 L16 20 Z" fill="currentColor"/>
+        </svg>
+      </span>
+      <p>CareerPath AI — a work in progress, built one waypoint at a time.</p>
+    </div>
+  </footer>
+
+  <!-- ============ CAREER MODAL ============ -->
+  <div class="cp-modal" id="career-modal" hidden>
+    <div class="cp-modal-backdrop" data-close></div>
+    <div class="cp-modal-panel" role="dialog" aria-modal="true" aria-labelledby="career-modal-title">
+      <button class="cp-modal-close" data-close aria-label="Close">&times;</button>
+      <p class="eyebrow" id="career-modal-eyebrow">Career</p>
+      <h3 id="career-modal-title">Career details</h3>
+      <div id="career-modal-view"></div>
+      <form id="career-modal-form" hidden>
+        <label>Title
+          <input type="text" name="title" required maxlength="100" />
+        </label>
+        <label>Category
+          <input type="text" name="category" maxlength="100" />
+        </label>
+        <label>Average salary (USD)
+          <input type="number" name="averageSalary" min="0" step="500" required />
+        </label>
+        <label>Demand level
+          <select name="demandLevel">
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
+          </select>
+        </label>
+        <label>Description
+          <textarea name="description" rows="4" maxlength="1000"></textarea>
+        </label>
+        <p class="form-error" id="career-form-error" hidden></p>
+        <div class="cp-modal-actions">
+          <button type="button" class="btn-ghost" data-close>Cancel</button>
+          <button type="submit" class="btn-solid">Save career</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ SKILL MODAL ============ -->
+  <div class="cp-modal" id="skill-modal" hidden>
+    <div class="cp-modal-backdrop" data-close></div>
+    <div class="cp-modal-panel" role="dialog" aria-modal="true" aria-labelledby="skill-modal-title">
+      <button class="cp-modal-close" data-close aria-label="Close">&times;</button>
+      <p class="eyebrow" id="skill-modal-eyebrow">Skill</p>
+      <h3 id="skill-modal-title">Skill details</h3>
+      <div id="skill-modal-view"></div>
+      <form id="skill-modal-form" hidden>
+        <label>Name
+          <input type="text" name="name" required maxlength="100" />
+        </label>
+        <label>Category
+          <input type="text" name="category" maxlength="100" />
+        </label>
+        <label>Description
+          <textarea name="description" rows="4" maxlength="1000"></textarea>
+        </label>
+        <p class="form-error" id="skill-form-error" hidden></p>
+        <div class="cp-modal-actions">
+          <button type="button" class="btn-ghost" data-close>Cancel</button>
+          <button type="submit" class="btn-solid">Save skill</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ CONFIRM DELETE ============ -->
+  <div class="cp-modal cp-modal--small" id="confirm-modal" hidden>
+    <div class="cp-modal-backdrop" data-close></div>
+    <div class="cp-modal-panel" role="dialog" aria-modal="true">
+      <p id="confirm-modal-text">Remove this entry from the catalogue?</p>
+      <div class="cp-modal-actions">
+        <button type="button" class="btn-ghost" data-close>Cancel</button>
+        <button type="button" class="btn-danger" id="confirm-modal-confirm">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-rail" id="toast-rail" aria-live="polite"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
