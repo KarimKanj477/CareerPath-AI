@@ -1,12 +1,15 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
 import { loginUser } from "../services/authService"
 
 function LoginPage() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [message, setMessage] = useState("")
+
     const navigate = useNavigate()
+    const { saveAuthentication } = useAuth()
 
     async function handleSubmit(event) {
         event.preventDefault()
@@ -18,21 +21,15 @@ function LoginPage() {
                 password,
             })
 
-            const token = response.data?.token
+            const authenticationData = response.data
 
-            if (!token) {
-                throw new Error("Authentication token was not returned")
-            }
-
-            localStorage.setItem("token", token)
-
-            if (response.data?.user) {
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(response.data.user),
+            if (!authenticationData?.token) {
+                throw new Error(
+                    "Authentication token was not returned",
                 )
             }
 
+            saveAuthentication(authenticationData)
             navigate("/dashboard")
         } catch (error) {
             setMessage(error.message)
@@ -46,22 +43,28 @@ function LoginPage() {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label htmlFor="email">Email</label>
+
                     <input
                         id="email"
                         type="email"
                         value={email}
-                        onChange={(event) => setEmail(event.target.value)}
+                        onChange={(event) =>
+                            setEmail(event.target.value)
+                        }
                         required
                     />
                 </div>
 
                 <div>
                     <label htmlFor="password">Password</label>
+
                     <input
                         id="password"
                         type="password"
                         value={password}
-                        onChange={(event) => setPassword(event.target.value)}
+                        onChange={(event) =>
+                            setPassword(event.target.value)
+                        }
                         required
                     />
                 </div>

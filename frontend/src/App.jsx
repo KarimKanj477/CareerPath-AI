@@ -8,6 +8,7 @@ import {
 import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
 import DashboardPage from "./pages/DashboardPage"
+import ProtectedRoute from "./routes/ProtectedRoute"
 
 function App() {
     return (
@@ -35,7 +36,11 @@ function App() {
 
                 <Route
                     path="/dashboard"
-                    element={<DashboardPage />}
+                    element={
+                        <ProtectedRoute>
+                            <DashboardPage />
+                        </ProtectedRoute>
+                    }
                 />
             </Routes>
         </>
