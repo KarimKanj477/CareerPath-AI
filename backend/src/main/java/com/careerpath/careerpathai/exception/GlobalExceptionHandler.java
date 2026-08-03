@@ -1,17 +1,15 @@
 package com.careerpath.careerpathai.exception;
 
+import com.careerpath.careerpathai.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.careerpath.careerpathai.dto.ApiResponse;
-import org.springframework.http.HttpStatus;
-import com.careerpath.careerpathai.exception.CareerNotFoundException;
-import com.careerpath.careerpathai.exception.CareerAlreadyExistsException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -79,7 +77,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiResponse<Object>>handleUserNotFound(UserNotFoundException exception){
         ApiResponse<Object> response= new ApiResponse<>(false,exception.getMessage(),null);
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 
     }
 
@@ -88,6 +86,34 @@ public class GlobalExceptionHandler {
         ApiResponse<Object> response= new ApiResponse<>(false,exception.getMessage(),null);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleBadCredentials(
+            BadCredentialsException exception) {
+
+        ApiResponse<Void> response = new ApiResponse<>(false, exception.getMessage(), null
+        );
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    @ExceptionHandler(UserSkillNotFoundException.class)
+    public ResponseEntity<ApiResponse<Object>> handleUserSkillNotFound(
+            UserSkillNotFoundException exception) {
+
+        ApiResponse<Object> response = new ApiResponse<>(false, exception.getMessage(), null);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(UserSkillAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse<Object>> handleUserSkillAlreadyExists(
+            UserSkillAlreadyExistsException exception) {
+
+        ApiResponse<Object> response = new ApiResponse<>(false, exception.getMessage(), null);
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
 
 
 

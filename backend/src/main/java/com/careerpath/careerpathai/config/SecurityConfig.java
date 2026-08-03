@@ -93,6 +93,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/**")
                         .hasRole("ADMIN")
 
+                        // A valid JWT is required for user skills
+                        .requestMatchers("/api/user-skills/**")
+                        .authenticated()
+
                         // Other modules remain temporarily public
                         .anyRequest()
                         .permitAll()
