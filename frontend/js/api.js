@@ -3,11 +3,22 @@
 // Error with the backend's own message on failure so callers can just
 // try/catch and show err.message directly.
 async function request(path, options = {}) {
+  const headers = new Headers(options.headers || {});
+
+  if (options.body && !headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
+
+  const token = localStorage.getItem("cp_token");
+  if (token && !headers.has("Authorization")) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
   let res;
   try {
     res = await fetch(`${window.API_BASE_URL}${path}`, {
-      headers: { "Content-Type": "application/json" },
       ...options,
+      headers,
     });
   } catch (networkError) {
     throw new Error(
@@ -34,6 +45,12 @@ async function request(path, options = {}) {
 
   return body;
 }
+
+const AuthAPI = {
+  login: (payload) => request("/auth/login", { method: "POST", body: JSON.stringify(payload) }),
+  register: (payload) => request("/auth/register", { method: "POST", body: JSON.stringify(payload) }),
+  me: () => request("/auth/me"),
+};
 
 const CareerAPI = {
   getAll: () => request("/careers"),

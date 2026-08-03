@@ -1,7 +1,7 @@
 INSERT INTO roles (id, name, description) VALUES (1, 'ADMIN', 'Administrator role');
 INSERT INTO roles (id, name, description) VALUES (2, 'USER', 'Regular user role');
 
-INSERT INTO careers (id, title, description, category, average_salary, demand_level) VALUES
+INSERT INTO careers (id, title, description, category, averageSalary, demandLevel) VALUES
 (1, 'Software Engineer', 'Build reliable web and mobile applications with modern engineering practices.', 'Technology', 120000.00, 'HIGH'),
 (2, 'Data Analyst', 'Turn data into clear insights that support business decisions.', 'Data', 85000.00, 'HIGH'),
 (3, 'UX Designer', 'Design intuitive digital experiences that blend usability and aesthetics.', 'Design', 95000.00, 'MEDIUM'),
