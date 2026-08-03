@@ -33,6 +33,7 @@
         <li><a href="#careers">Careers</a></li>
         <li><a href="#skills">Skills</a></li>
         <li><a href="#about">About</a></li>
+        <li><button class="nav-auth-btn" id="nav-auth-btn">Sign in</button></li>
       </ul>
     </div>
   </nav>
@@ -58,6 +59,16 @@
       <p class="hero-stats" id="hero-stats" aria-live="polite">Loading the map…</p>
     </div>
   </header>
+
+  <section class="auth-banner" id="auth-banner">
+    <div class="auth-banner-inner">
+      <div>
+        <p class="eyebrow">Member access</p>
+        <h2>Track your own skills and build a personal profile.</h2>
+      </div>
+      <button class="btn-solid" id="banner-auth-btn">Open login portal</button>
+    </div>
+  </section>
 
   <!-- ============ THE ROUTE ============ -->
   <section class="route-section" id="route">
@@ -177,6 +188,37 @@
     </div>
   </section>
 
+  <!-- ============ PERSONAL SKILLS ============ -->
+  <section class="catalog-section catalog-section--alt" id="my-skills">
+    <div class="section-head">
+      <p class="eyebrow">Member workspace</p>
+      <h2>Your skills</h2>
+      <p class="section-sub">Sign in to save the skills you already have and keep them visible in one place.</p>
+    </div>
+
+    <div class="auth-gate" id="auth-gate">
+      <div class="state-card">
+        <p>Please sign in to manage your personal skill list.</p>
+        <button class="btn-solid" id="my-skills-signin-btn">Sign in</button>
+      </div>
+    </div>
+
+    <div id="my-skills-panel" hidden>
+      <div class="catalog-controls">
+        <div class="search-box">
+          <input type="text" id="my-skill-search" placeholder="Search your skills…" autocomplete="off" />
+        </div>
+        <select class="category-select" id="my-skill-category-filter">
+          <option value="ALL">All categories</option>
+        </select>
+        <button class="btn-solid" id="my-skill-add-btn">+ Add skill</button>
+      </div>
+      <div class="tag-grid" id="my-skill-grid" aria-live="polite">
+        <div class="state-card state-card--loading">Loading your skills…</div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ ABOUT ============ -->
   <section class="about-section" id="about">
     <div class="about-inner">
@@ -261,6 +303,71 @@
           <textarea name="description" rows="4" maxlength="1000"></textarea>
         </label>
         <p class="form-error" id="skill-form-error" hidden></p>
+        <div class="cp-modal-actions">
+          <button type="button" class="btn-ghost" data-close>Cancel</button>
+          <button type="submit" class="btn-solid">Save skill</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ AUTH MODAL ============ -->
+  <div class="cp-modal" id="auth-modal" hidden>
+    <div class="cp-modal-backdrop" data-close></div>
+    <div class="cp-modal-panel" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+      <button class="cp-modal-close" data-close aria-label="Close">&times;</button>
+      <p class="eyebrow">Secure access</p>
+      <h3 id="auth-modal-title">Sign in</h3>
+      <form id="auth-form">
+        <div id="auth-mode-switch" class="auth-mode-switch">
+          <button type="button" class="auth-mode-btn is-active" data-mode="login">Sign in</button>
+          <button type="button" class="auth-mode-btn" data-mode="register">Create account</button>
+        </div>
+        <div id="auth-extra-fields" hidden>
+          <label>First name
+            <input type="text" name="firstname" maxlength="100" />
+          </label>
+          <label>Last name
+            <input type="text" name="lastname" maxlength="100" />
+          </label>
+        </div>
+        <label>Email
+          <input type="email" name="email" required maxlength="150" />
+        </label>
+        <label>Password
+          <input type="password" name="password" required minlength="8" />
+        </label>
+        <label>Experience level
+          <input type="text" name="experienceLevel" maxlength="50" placeholder="Student, Graduate, Professional" />
+        </label>
+        <p class="form-error" id="auth-form-error" hidden></p>
+        <div class="cp-modal-actions">
+          <button type="button" class="btn-ghost" data-close>Cancel</button>
+          <button type="submit" class="btn-solid">Continue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ PERSONAL SKILL MODAL ============ -->
+  <div class="cp-modal" id="my-skill-modal" hidden>
+    <div class="cp-modal-backdrop" data-close></div>
+    <div class="cp-modal-panel" role="dialog" aria-modal="true" aria-labelledby="my-skill-modal-title">
+      <button class="cp-modal-close" data-close aria-label="Close">&times;</button>
+      <p class="eyebrow">Your skill list</p>
+      <h3 id="my-skill-modal-title">Add a skill</h3>
+      <form id="my-skill-form">
+        <label>Select skill
+          <select name="skillId" required></select>
+        </label>
+        <label>Proficiency level
+          <select name="proficiencyLevel">
+            <option value="BEGINNER">Beginner</option>
+            <option value="INTERMEDIATE">Intermediate</option>
+            <option value="ADVANCED">Advanced</option>
+          </select>
+        </label>
+        <p class="form-error" id="my-skill-form-error" hidden></p>
         <div class="cp-modal-actions">
           <button type="button" class="btn-ghost" data-close>Cancel</button>
           <button type="submit" class="btn-solid">Save skill</button>

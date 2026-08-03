@@ -3,9 +3,14 @@
 // ---------------------------------------------------------
 let allCareers = [];
 let allSkills = [];
+let currentUser = null;
+let currentUserSkills = [];
 
 const careerFilters = { query: "", demand: "ALL", category: "ALL" };
 const skillFilters = { query: "", category: "ALL" };
+const mySkillFilters = { query: "", category: "ALL" };
+let authMode = "login";
+let editingUserSkillId = null;
 
 // ---------------------------------------------------------
 // Toasts
@@ -17,6 +22,93 @@ function showToast(message, type = "default") {
   el.textContent = message;
   rail.appendChild(el);
   setTimeout(() => el.remove(), 3500);
+}
+
+function setAuthToken(token) {
+  if (token) {
+    localStorage.setItem("cp_token", token);
+  } else {
+    localStorage.removeItem("cp_token");
+  }
+}
+
+function clearAuthState() {
+  currentUser = null;
+  currentUserSkills = [];
+  setAuthToken(null);
+  renderAuthPanel();
+  renderMySkills();
+}
+
+function renderAuthPanel() {
+  const button = document.getElementById("nav-auth-btn");
+  const bannerButton = document.getElementById("banner-auth-btn");
+  const gate = document.getElementById("auth-gate");
+  const panel = document.getElementById("my-skills-panel");
+
+  if (currentUser) {
+    const name = [currentUser.firstname, currentUser.lastname].filter(Boolean).join(" ") || currentUser.email;
+    button.textContent = `Hi, ${name}`;
+    bannerButton.textContent = "Go to your workspace";
+    if (gate) gate.hidden = true;
+    if (panel) panel.hidden = false;
+  } else {
+    button.textContent = "Sign in";
+    bannerButton.textContent = "Open login portal";
+    if (gate) gate.hidden = false;
+    if (panel) panel.hidden = true;
+  }
+}
+
+async function hydrateAuth() {
+  const token = localStorage.getItem("cp_token");
+  if (!token) {
+    renderAuthPanel();
+    return;
+  }
+
+  try {
+    currentUser = await AuthAPI.me();
+    renderAuthPanel();
+    await loadMySkills();
+  } catch (err) {
+    clearAuthState();
+    showToast("Your session expired. Please sign in again.", "error");
+  }
+}
+
+function openAuthModal(mode = "login") {
+  authMode = mode;
+  const form = document.getElementById("auth-form");
+  const switchButtons = document.querySelectorAll(".auth-mode-btn");
+  const extraFields = document.getElementById("auth-extra-fields");
+  const title = document.getElementById("auth-modal-title");
+
+  switchButtons.forEach((btn) => {
+    btn.classList.toggle("is-active", btn.dataset.mode === authMode);
+  });
+
+  extraFields.hidden = authMode !== "register";
+  title.textContent = authMode === "register" ? "Create your account" : "Sign in";
+  form.reset();
+  document.getElementById("auth-form-error").hidden = true;
+  openModal("auth-modal");
+}
+
+function populateMySkillOptions() {
+  const select = document.querySelector("#my-skill-form select[name='skillId']") || document.querySelector("#my-skill-modal select[name='skillId']") ;
+  if (!select) return;
+
+  const currentValue = select.value;
+  const skillOptions = allSkills
+    .filter((skill) => skill && skill.id != null)
+    .map((skill) => `<option value="${skill.id}" ${currentValue === String(skill.id) ? "selected" : ""}>${escapeHtml(skill.name)}</option>`)
+    .join("");
+
+  select.innerHTML = `<option value="">Choose a skill…</option>${skillOptions}`;
+  if (currentValue) {
+    select.value = currentValue;
+  }
 }
 
 // ---------------------------------------------------------
@@ -569,6 +661,210 @@ document.getElementById("skill-manage-toggle").addEventListener("change", (e) =>
 });
 
 // ===========================================================
+// PERSONAL SKILLS
+// ===========================================================
+function filteredMySkills() {
+  return currentUserSkills.filter((entry) => {
+    const label = `${entry.skillName || ""} ${entry.skillCategory || ""}`.toLowerCase();
+    const matchesQuery = label.includes(mySkillFilters.query.toLowerCase());
+    const matchesCategory = mySkillFilters.category === "ALL" || entry.skillCategory === mySkillFilters.category;
+    return matchesQuery && matchesCategory;
+  });
+}
+
+function renderMySkills() {
+  const grid = document.getElementById("my-skill-grid");
+  if (!currentUser) {
+    grid.innerHTML = `<div class="state-card">Please sign in to keep your own skill list here.</div>`;
+    return;
+  }
+
+  const items = filteredMySkills();
+  if (items.length === 0) {
+    grid.innerHTML = `<div class="state-card">Your personal skill list is empty. Add your first skill to get started.</div>`;
+    return;
+  }
+
+  grid.innerHTML = items.map((entry) => `
+    <article class="tag-card">
+      <div class="tag-card-top">
+        <span class="tag-card-name">${escapeHtml(entry.skillName || "Skill")}</span>
+        <span class="tag-card-category">${escapeHtml(entry.skillCategory || "General")}</span>
+      </div>
+      <p class="tag-card-desc">${escapeHtml(entry.proficiencyLevel || "Beginner")}</p>
+      <div class="tag-card-actions">
+        <button class="btn-edit" data-edit="${entry.id}">Edit</button>
+        <button class="btn-delete" data-delete="${entry.id}">Remove</button>
+      </div>
+    </article>
+  `).join("");
+
+  grid.querySelectorAll("[data-edit]").forEach((btn) =>
+    btn.addEventListener("click", () => editMySkill(Number(btn.dataset.edit)))
+  );
+  grid.querySelectorAll("[data-delete]").forEach((btn) =>
+    btn.addEventListener("click", () => deleteMySkill(Number(btn.dataset.delete)))
+  );
+}
+
+async function loadMySkills() {
+  const grid = document.getElementById("my-skill-grid");
+  if (!currentUser) {
+    renderMySkills();
+    return;
+  }
+
+  try {
+    const items = await request(`/users/${currentUser.userId}/skills`);
+    currentUserSkills = items || [];
+    populateMySkillCategoryOptions(currentUserSkills);
+    renderMySkills();
+  } catch (err) {
+    grid.innerHTML = `<div class="state-card state-card--error">Unable to load your skills — ${escapeHtml(err.message)}</div>`;
+  }
+}
+
+function populateMySkillCategoryOptions(items) {
+  const select = document.getElementById("my-skill-category-filter");
+  const current = select.value;
+  const categories = [...new Set(items.map((item) => item.skillCategory).filter(Boolean))].sort();
+  select.innerHTML = `<option value="ALL">All categories</option>${categories.map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`).join("")}`;
+  if (categories.includes(current)) {
+    select.value = current;
+  }
+}
+
+function openMySkillModal(entry = null) {
+  const form = document.getElementById("my-skill-form");
+  const title = document.getElementById("my-skill-modal-title");
+  form.reset();
+  editingUserSkillId = entry ? entry.id : null;
+  title.textContent = entry ? "Update your skill" : "Add a skill";
+
+  if (entry) {
+    form.skillId.value = entry.skillId || "";
+    form.proficiencyLevel.value = (entry.proficiencyLevel || "BEGINNER").toUpperCase();
+  }
+
+  populateMySkillOptions();
+  document.getElementById("my-skill-form-error").hidden = true;
+  openModal("my-skill-modal");
+}
+
+function editMySkill(id) {
+  const entry = currentUserSkills.find((item) => item.id === id);
+  if (!entry) return;
+  openMySkillModal(entry);
+}
+
+async function saveMySkill(payload) {
+  const path = editingUserSkillId
+    ? `/users/${currentUser.userId}/skills/${editingUserSkillId}`
+    : `/users/${currentUser.userId}/skills`;
+  const method = editingUserSkillId ? "PUT" : "POST";
+  await request(path, { method, body: JSON.stringify(payload) });
+}
+
+function deleteMySkill(id) {
+  const entry = currentUserSkills.find((item) => item.id === id);
+  confirmAction(`Remove "${entry ? entry.skillName : "this skill"}" from your list?`, async () => {
+    try {
+      await request(`/users/${currentUser.userId}/skills/${id}`, { method: "DELETE" });
+      showToast("Skill removed", "success");
+      await loadMySkills();
+    } catch (err) {
+      showToast(err.message, "error");
+    }
+  });
+}
+
+document.getElementById("my-skill-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const errorEl = document.getElementById("my-skill-form-error");
+  errorEl.hidden = true;
+
+  const payload = {
+    skillId: Number(form.skillId.value),
+    proficiencyLevel: form.proficiencyLevel.value,
+  };
+
+  try {
+    await saveMySkill(payload);
+    closeModal("my-skill-modal");
+    await loadMySkills();
+    showToast(editingUserSkillId ? "Skill updated" : "Skill added", "success");
+  } catch (err) {
+    errorEl.textContent = err.message;
+    errorEl.hidden = false;
+  }
+});
+
+document.getElementById("my-skill-add-btn").addEventListener("click", () => openMySkillModal());
+document.getElementById("my-skills-signin-btn").addEventListener("click", () => openAuthModal("login"));
+document.getElementById("nav-auth-btn").addEventListener("click", () => {
+  if (currentUser) {
+    clearAuthState();
+    showToast("Signed out", "success");
+  } else {
+    openAuthModal("login");
+  }
+});
+document.getElementById("banner-auth-btn").addEventListener("click", () => openAuthModal("login"));
+
+document.getElementById("my-skill-search").addEventListener("input", (e) => {
+  mySkillFilters.query = e.target.value;
+  renderMySkills();
+});
+
+document.getElementById("my-skill-category-filter").addEventListener("change", (e) => {
+  mySkillFilters.category = e.target.value;
+  renderMySkills();
+});
+
+document.getElementById("auth-mode-switch").addEventListener("click", (e) => {
+  const button = e.target.closest("[data-mode]");
+  if (!button) return;
+  openAuthModal(button.dataset.mode);
+});
+
+document.getElementById("auth-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const errorEl = document.getElementById("auth-form-error");
+  errorEl.hidden = true;
+
+  const payload = authMode === "register"
+    ? {
+        firstname: form.firstname.value.trim(),
+        lastname: form.lastname.value.trim(),
+        email: form.email.value.trim(),
+        password: form.password.value,
+        experienceLevel: form.experienceLevel.value.trim() || null,
+      }
+    : {
+        email: form.email.value.trim(),
+        password: form.password.value,
+      };
+
+  try {
+    const authResponse = authMode === "register"
+      ? await AuthAPI.register(payload)
+      : await AuthAPI.login(payload);
+
+    setAuthToken(authResponse.token);
+    currentUser = await AuthAPI.me();
+    renderAuthPanel();
+    await loadMySkills();
+    closeModal("auth-modal");
+    showToast(authMode === "register" ? "Account created successfully" : "Signed in successfully", "success");
+  } catch (err) {
+    errorEl.textContent = err.message;
+    errorEl.hidden = false;
+  }
+});
+
+// ===========================================================
 // HERO
 // ===========================================================
 function updateHeroStats() {
@@ -592,3 +888,4 @@ document.getElementById("hero-search-form").addEventListener("submit", (e) => {
 // ===========================================================
 loadCareers();
 loadSkills();
+hydrateAuth();
