@@ -28,7 +28,11 @@ async function request(path, options = {}) {
     throw new Error(message);
   }
 
-  return body ? body.data : null;
+  if (body && Object.prototype.hasOwnProperty.call(body, "data")) {
+    return body.data;
+  }
+
+  return body;
 }
 
 const CareerAPI = {
