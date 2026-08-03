@@ -63,7 +63,148 @@ function demandBadgeClass(level) {
   if (l === "LOW") return "badge--low";
   return "badge--medium";
 }
+function getRoadmapForCareer(career) {
+  const title = (career.title || "").toLowerCase();
+  const category = (career.category || "").toLowerCase();
 
+  if (title.includes("software") || title.includes("developer") || title.includes("programmer")) {
+    return {
+      summary: "Build a strong technical foundation, ship practical projects, and grow into responsibilities that combine delivery and collaboration.",
+      steps: [
+        { title: "Master the fundamentals", description: "Strengthen programming, problem solving, and core tools such as Git, APIs, and databases." },
+        { title: "Develop in a real stack", description: "Work with a modern frontend, backend, and deployment workflow to build end-to-end products." },
+        { title: "Create portfolio work", description: "Publish projects that demonstrate reliability, design thinking, and clear documentation." },
+        { title: "Advance into professional roles", description: "Prepare for interviews, team collaboration, and ownership of larger technical initiatives." }
+      ],
+      skills: ["Programming fundamentals", "Version control", "Databases", "APIs", "System design", "Communication"],
+      nextAction: "Start by choosing one project that solves a real problem and complete it end to end."
+    };
+  }
+
+  if (title.includes("data analyst") || title.includes("data scientist") || (title.includes("analyst") && category.includes("data"))) {
+    return {
+      summary: "Turn information into clear business decisions through analysis, visualization, and careful storytelling.",
+      steps: [
+        { title: "Learn analytical foundations", description: "Build fluency in statistics, data cleaning, and spreadsheet-based analysis." },
+        { title: "Strengthen querying skills", description: "Practice SQL and become comfortable working with structured datasets." },
+        { title: "Create dashboards", description: "Translate findings into visual stories using charts, KPIs, and business context." },
+        { title: "Show business impact", description: "Tie each project back to measurable outcomes and decision-making." }
+      ],
+      skills: ["SQL", "Excel", "Statistics", "Data visualization", "Business communication", "Dashboard design"],
+      nextAction: "Build one dashboard that answers a business question with clear insight and a polished narrative."
+    };
+  }
+
+  if (title.includes("ux") || title.includes("designer") || category.includes("design")) {
+    return {
+      summary: "Design products that are intuitive, accessible, and valuable by combining research, structure, and visual clarity.",
+      steps: [
+        { title: "Understand user needs", description: "Learn research methods, user flows, and patterns that improve usability." },
+        { title: "Practice interface design", description: "Develop wireframes, prototypes, and visual systems that support clear interaction." },
+        { title: "Build a portfolio", description: "Showcase design thinking through case studies and polished examples of your work." },
+        { title: "Prepare for product teams", description: "Learn how to collaborate with developers and stakeholders across the full design process." }
+      ],
+      skills: ["User research", "Wireframing", "Prototyping", "Accessibility", "Design systems", "Presenting ideas"],
+      nextAction: "Create a small end-to-end design case study that shows your process from research to final solution."
+    };
+  }
+
+  if (title.includes("security") || title.includes("cyber")) {
+    return {
+      summary: "Protect systems through strong technical knowledge, risk awareness, and disciplined response practices.",
+      steps: [
+        { title: "Build networking fundamentals", description: "Understand how systems, protocols, and endpoints interact in a real environment." },
+        { title: "Learn security principles", description: "Study authentication, vulnerabilities, logging, and defensive controls." },
+        { title: "Practice hands-on analysis", description: "Use labs and scenarios to strengthen detection and incident response skills." },
+        { title: "Develop professional credibility", description: "Showcase your work through practical projects, certifications, and clear documentation." }
+      ],
+      skills: ["Networking", "Threat analysis", "Security tools", "Risk assessment", "Incident response", "Documentation"],
+      nextAction: "Set up a small lab environment and practice identifying and documenting a realistic security issue."
+    };
+  }
+
+  if (category.includes("engineering") || title.includes("mechanical") || title.includes("civil")) {
+    return {
+      summary: "Combine technical knowledge with practical problem solving and project awareness to deliver reliable results.",
+      steps: [
+        { title: "Strengthen core engineering concepts", description: "Deepen your understanding of design principles, calculations, and technical standards." },
+        { title: "Learn industry tools", description: "Gain confidence with design, modeling, and documentation software used in the field." },
+        { title: "Get project experience", description: "Work on practical examples that connect theory to real-world implementation." },
+        { title: "Grow into leadership", description: "Build communication and coordination skills to support teams and clients effectively." }
+      ],
+      skills: ["Technical analysis", "Design software", "Project awareness", "Problem solving", "Team collaboration", "Documentation"],
+      nextAction: "Build a project portfolio that highlights your design thinking and technical decisions."
+    };
+  }
+
+  if (category.includes("business") || title.includes("business analyst") || title.includes("marketing")) {
+    return {
+      summary: "Connect strategy, operations, and communication so that business goals are translated into measurable progress.",
+      steps: [
+        { title: "Develop business fluency", description: "Understand how organizations create value, measure performance, and make decisions." },
+        { title: "Improve analytical execution", description: "Learn tools and methods that support planning, reporting, and process improvement." },
+        { title: "Build stakeholder confidence", description: "Practice communicating recommendations clearly across teams and leadership." },
+        { title: "Lead with impact", description: "Show how your work supports growth, efficiency, and better outcomes." }
+      ],
+      skills: ["Business analysis", "Communication", "Strategy", "Reporting", "Stakeholder management", "Problem solving"],
+      nextAction: "Prepare a short recommendation memo or case study that shows how you would improve a real process."
+    };
+  }
+
+  if (category.includes("health") || title.includes("nurse") || title.includes("physician") || title.includes("assistant")) {
+    return {
+      summary: "Build clinical competence, empathy, and reliability through consistent practice and professional development.",
+      steps: [
+        { title: "Complete the required training", description: "Focus on the core education and certifications needed for the role." },
+        { title: "Gain practical experience", description: "Develop confidence by working in real clinical or care environments." },
+        { title: "Strengthen patient communication", description: "Practice clear, compassionate communication with patients and interdisciplinary teams." },
+        { title: "Advance professionally", description: "Keep improving through specialization, mentorship, and continued learning." }
+      ],
+      skills: ["Clinical knowledge", "Patient care", "Communication", "Teamwork", "Professional ethics", "Adaptability"],
+      nextAction: "Focus on the next certification or clinical milestone that moves you closer to the role."
+    };
+  }
+
+  if (category.includes("education") || title.includes("teacher")) {
+    return {
+      summary: "Create meaningful learning experiences by combining subject knowledge, classroom management, and student support.",
+      steps: [
+        { title: "Build teaching foundations", description: "Develop lesson planning, pedagogy, and assessment methods." },
+        { title: "Gain classroom experience", description: "Practice leading learning environments and adapting to student needs." },
+        { title: "Strengthen communication", description: "Learn how to guide, motivate, and support learners effectively." },
+        { title: "Grow into leadership", description: "Advance through mentoring, curriculum work, and professional development." }
+      ],
+      skills: ["Instruction", "Assessment", "Classroom management", "Communication", "Adaptability", "Mentorship"],
+      nextAction: "Create a sample lesson plan or learning module that demonstrates your teaching approach."
+    };
+  }
+
+  if (category.includes("finance") || title.includes("financial")) {
+    return {
+      summary: "Combine technical analysis with trust, planning, and clear guidance to support better financial decisions.",
+      steps: [
+        { title: "Understand financial principles", description: "Build confidence in budgeting, markets, analysis, and planning." },
+        { title: "Develop client-facing skills", description: "Learn how to explain recommendations with clarity and professionalism." },
+        { title: "Gain practical experience", description: "Work through case studies, portfolios, or supervised projects." },
+        { title: "Advance with credentials", description: "Continue building credibility through qualifications and professional growth." }
+      ],
+      skills: ["Financial analysis", "Planning", "Communication", "Risk awareness", "Client trust", "Compliance"],
+      nextAction: "Prepare a short client-ready recommendation that shows your analytical and communication strengths."
+    };
+  }
+
+  return {
+    summary: "Follow a clear progression from learning the foundations to building experience and demonstrating value in the field.",
+    steps: [
+      { title: "Learn the essentials", description: "Build a strong base in the knowledge and tools most relevant to the role." },
+      { title: "Gain hands-on experience", description: "Apply your knowledge through projects, internships, or practical work." },
+      { title: "Build credibility", description: "Showcase your results with examples, evidence, and clear communication." },
+      { title: "Advance steadily", description: "Use each milestone to grow into broader responsibilities and stronger opportunities." }
+    ],
+    skills: ["Core knowledge", "Practical experience", "Communication", "Professional growth"],
+    nextAction: "Choose one focused milestone and start building momentum with a concrete learning plan."
+  };
+}
 function escapeHtml(str) {
   return String(str ?? "").replace(/[&<>"']/g, (c) => (
     { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
@@ -124,7 +265,7 @@ function renderCareers() {
         <span class="badge ${demandBadgeClass(c.demandLevel)}">${escapeHtml(c.demandLevel || "Medium")} demand</span>
       </div>
       <div class="card-actions">
-        <button class="btn-view" data-view="${c.id}">View route</button>
+        <button class="btn-view" data-view="${c.id}">View roadmap</button>
         ${managing ? `
           <button class="btn-edit" data-edit="${c.id}">Edit</button>
           <button class="btn-delete" data-delete="${c.id}">Remove</button>
@@ -147,12 +288,54 @@ function renderCareers() {
 function viewCareer(id) {
   const c = allCareers.find((x) => x.id === id);
   if (!c) return;
+  const roadmap = getRoadmapForCareer(c);
+
   document.getElementById("career-modal-eyebrow").textContent = c.category || "Career";
   document.getElementById("career-modal-title").textContent = c.title;
   document.getElementById("career-modal-view").innerHTML = `
-    <div class="modal-detail-row"><span>Average salary</span><span>${money(c.averageSalary)}</span></div>
-    <div class="modal-detail-row"><span>Demand</span><span>${escapeHtml(c.demandLevel || "Medium")}</span></div>
-    <p style="margin-top:1rem;color:var(--ink-soft)">${escapeHtml(c.description || "No description logged yet.")}</p>
+    <div class="roadmap-shell">
+      <div class="roadmap-header">
+        <div class="roadmap-header-top">
+          <span class="roadmap-pill">Professional roadmap</span>
+          <span class="roadmap-pill roadmap-pill--accent">${escapeHtml(c.demandLevel || "Medium")} demand</span>
+        </div>
+        <h4>${escapeHtml(c.title)} pathway</h4>
+        <p>${escapeHtml(roadmap.summary)}</p>
+      </div>
+
+      <div class="roadmap-grid">
+        <div class="roadmap-card">
+          <h5>Milestones</h5>
+          <div class="roadmap-steps">
+            ${roadmap.steps.map((step, index) => `
+              <div class="roadmap-step">
+                <span class="roadmap-step-badge">0${index + 1}</span>
+                <div>
+                  <h6>${escapeHtml(step.title)}</h6>
+                  <p>${escapeHtml(step.description)}</p>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="roadmap-card">
+          <h5>Core skills to focus on</h5>
+          <ul class="roadmap-list">
+            ${roadmap.skills.map((skill) => `<li>${escapeHtml(skill)}</li>`).join("")}
+          </ul>
+        </div>
+      </div>
+
+      <div class="roadmap-card roadmap-card--highlight">
+        <h5>Recommended next move</h5>
+        <p>${escapeHtml(roadmap.nextAction)}</p>
+      </div>
+
+      <div class="modal-detail-row"><span>Average salary</span><span>${money(c.averageSalary)}</span></div>
+      <div class="modal-detail-row"><span>Demand</span><span>${escapeHtml(c.demandLevel || "Medium")}</span></div>
+      <p class="roadmap-description">${escapeHtml(c.description || "No description logged yet.")}</p>
+    </div>
   `;
   document.getElementById("career-modal-view").hidden = false;
   document.getElementById("career-modal-form").hidden = true;
