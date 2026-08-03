@@ -2,8 +2,10 @@ package com.careerpath.careerpathai.service.impl;
 
 import com.careerpath.careerpathai.dto.auth.AuthResponse;
 import com.careerpath.careerpathai.dto.auth.LoginRequest;
+import com.careerpath.careerpathai.dto.auth.RegisterRequest;
 import com.careerpath.careerpathai.entity.Role;
 import com.careerpath.careerpathai.entity.User;
+import com.careerpath.careerpathai.exception.UserAlreadyExistsException;
 import com.careerpath.careerpathai.repository.RoleRepository;
 import com.careerpath.careerpathai.repository.UserRepository;
 import com.careerpath.careerpathai.security.JwtUtil;
@@ -19,7 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -69,5 +73,20 @@ class AuthServiceImplTest {
         assertEquals("student@example.com", response.getEmail());
         assertEquals("STUDENT", response.getRole());
         verify(jwtUtil).generateToken("student@example.com", "STUDENT", 7);
+    }
+        @Test
+    void registerShouldThrowUserAlreadyExistsWhenEmailIsTaken() {
+        RegisterRequest request = new RegisterRequest();
+        request.setFirstname("Jane");
+        request.setLastname("Doe");
+        request.setEmail("student@example.com");
+        request.setPassword("secret123");
+
+        when(userRepository.existsByEmail("student@example.com")).thenReturn(true);
+
+        assertThrows(UserAlreadyExistsException.class, () -> authService.register(request));
+
+        verify(userRepository, never()).save(any(User.class));
+        verify(roleRepository, never()).findAll();
     }
 }

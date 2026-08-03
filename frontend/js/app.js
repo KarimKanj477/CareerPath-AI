@@ -715,7 +715,7 @@ async function loadMySkills() {
   }
 
   try {
-    const items = await request(`/users/${currentUser.userId}/skills`);
+    const items = await request(`/users/${currentUser.id}/skills`);
     currentUserSkills = items || [];
     populateMySkillCategoryOptions(currentUserSkills);
     renderMySkills();
@@ -759,8 +759,8 @@ function editMySkill(id) {
 
 async function saveMySkill(payload) {
   const path = editingUserSkillId
-    ? `/users/${currentUser.userId}/skills/${editingUserSkillId}`
-    : `/users/${currentUser.userId}/skills`;
+    ? `/users/${currentUser.id}/skills/${editingUserSkillId}`
+    : `/users/${currentUser.id}/skills`;
   const method = editingUserSkillId ? "PUT" : "POST";
   await request(path, { method, body: JSON.stringify(payload) });
 }
@@ -769,7 +769,7 @@ function deleteMySkill(id) {
   const entry = currentUserSkills.find((item) => item.id === id);
   confirmAction(`Remove "${entry ? entry.skillName : "this skill"}" from your list?`, async () => {
     try {
-      await request(`/users/${currentUser.userId}/skills/${id}`, { method: "DELETE" });
+      await request(`/users/${currentUser.id}/skills/${id}`, { method: "DELETE" });
       showToast("Skill removed", "success");
       await loadMySkills();
     } catch (err) {
