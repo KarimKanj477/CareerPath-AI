@@ -1,6 +1,5 @@
 import {
     Navigate,
-    NavLink,
     Route,
     Routes,
 } from "react-router-dom"
@@ -9,17 +8,14 @@ import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
 import DashboardPage from "./pages/DashboardPage"
 import ProtectedRoute from "./routes/ProtectedRoute"
+import Navbar from "./components/Navbar"
+import PublicRoute from "./routes/PublicRoute"
+import MySkillsPage from "./pages/MySkillsPage"
 
 function App() {
     return (
         <>
-            <nav>
-                <NavLink to="/login">Login</NavLink>
-                {" | "}
-                <NavLink to="/register">Register</NavLink>
-                {" | "}
-                <NavLink to="/dashboard">Dashboard</NavLink>
-            </nav>
+            <Navbar />
 
             <Routes>
                 <Route
@@ -27,11 +23,22 @@ function App() {
                     element={<Navigate to="/login" replace />}
                 />
 
-                <Route path="/login" element={<LoginPage />} />
+                <Route
+                    path="/login"
+                    element={
+                        <PublicRoute>
+                            <LoginPage />
+                        </PublicRoute>
+                    }
+                />
 
                 <Route
                     path="/register"
-                    element={<RegisterPage />}
+                    element={
+                        <PublicRoute>
+                            <RegisterPage />
+                        </PublicRoute>
+                    }
                 />
 
                 <Route
@@ -39,6 +46,14 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <DashboardPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/skills"
+                    element={
+                        <ProtectedRoute>
+                            <MySkillsPage />
                         </ProtectedRoute>
                     }
                 />

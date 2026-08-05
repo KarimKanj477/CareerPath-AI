@@ -1,8 +1,9 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { registerUser } from "../services/authService"
 
 function RegisterPage() {
+    const navigate = useNavigate()
     const [formData, setFormData] = useState({
         firstname: "",
         lastname: "",
@@ -31,16 +32,11 @@ function RegisterPage() {
         try {
             await registerUser(formData)
 
-            setMessage(
-                "Registration successful. You can now log in.",
-            )
-
-            setFormData({
-                firstname: "",
-                lastname: "",
-                email: "",
-                password: "",
-                experienceLevel: "",
+            navigate("/login", {
+                replace: true,
+                state: {
+                    message: "Registration successful. You can now log in.",
+                },
             })
         } catch (error) {
             setMessage(error.message)
@@ -50,95 +46,126 @@ function RegisterPage() {
     }
 
     return (
-        <div>
-            <h1>Create Account</h1>
+        <main className="auth-page">
+            <section className="auth-card register-card">
+                <div className="auth-header">
+                    <p>Start your journey</p>
 
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="firstname">First name</label>
+                    <h1>Create your account</h1>
 
-                    <input
-                        id="firstname"
-                        name="firstname"
-                        type="text"
-                        value={formData.firstname}
-                        onChange={handleChange}
-                        maxLength={100}
-                        required
-                    />
+                    <p>
+                        Build your profile and receive personalized career
+                        guidance.
+                    </p>
                 </div>
 
-                <div>
-                    <label htmlFor="lastname">Last name</label>
+                <form className="auth-form" onSubmit={handleSubmit}>
+                    <div className="form-row">
+                        <div className="form-group">
+                            <label htmlFor="firstname">First name</label>
 
-                    <input
-                        id="lastname"
-                        name="lastname"
-                        type="text"
-                        value={formData.lastname}
-                        onChange={handleChange}
-                        maxLength={100}
-                        required
-                    />
-                </div>
+                            <input
+                                id="firstname"
+                                name="firstname"
+                                type="text"
+                                value={formData.firstname}
+                                onChange={handleChange}
+                                maxLength={100}
+                                placeholder="Enter your first name"
+                                required
+                            />
+                        </div>
 
-                <div>
-                    <label htmlFor="email">Email</label>
+                        <div className="form-group">
+                            <label htmlFor="lastname">Last name</label>
 
-                    <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        maxLength={150}
-                        required
-                    />
-                </div>
+                            <input
+                                id="lastname"
+                                name="lastname"
+                                type="text"
+                                value={formData.lastname}
+                                onChange={handleChange}
+                                maxLength={100}
+                                placeholder="Enter your last name"
+                                required
+                            />
+                        </div>
+                    </div>
 
-                <div>
-                    <label htmlFor="password">Password</label>
+                    <div className="form-group">
+                        <label htmlFor="email">Email address</label>
 
-                    <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        minLength={8}
-                        maxLength={255}
-                        required
-                    />
-                </div>
+                        <input
+                            id="email"
+                            name="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            maxLength={150}
+                            placeholder="Enter your email"
+                            required
+                        />
+                    </div>
 
-                <div>
-                    <label htmlFor="experienceLevel">
-                        Experience level
-                    </label>
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label>
 
-                    <input
-                        id="experienceLevel"
-                        name="experienceLevel"
-                        type="text"
-                        value={formData.experienceLevel}
-                        onChange={handleChange}
-                        maxLength={50}
-                        placeholder="Example: Beginner"
-                    />
-                </div>
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            minLength={8}
+                            maxLength={255}
+                            placeholder="At least 8 characters"
+                            required
+                        />
+                    </div>
 
-                <button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Creating account..." : "Register"}
-                </button>
-            </form>
+                    <div className="form-group">
+                        <label htmlFor="experienceLevel">
+                            Experience level
+                        </label>
 
-            {message && <p>{message}</p>}
+                        <select
+                            id="experienceLevel"
+                            name="experienceLevel"
+                            value={formData.experienceLevel}
+                            onChange={handleChange}
+                        >
+                            <option value="">Select your level</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">
+                                Intermediate
+                            </option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
 
-            <p>
-                Already have an account?{" "}
-                <Link to="/login">Login</Link>
-            </p>
-        </div>
+                    <button
+                        className="primary-button"
+                        type="submit"
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting
+                            ? "Creating account..."
+                            : "Create account"}
+                    </button>
+                </form>
+
+                {message && (
+                    <p className="form-message error-message">
+                        {message}
+                    </p>
+                )}
+
+                <p className="auth-switch">
+                    Already have an account?{" "}
+                    <Link to="/login">Login</Link>
+                </p>
+            </section>
+        </main>
     )
 }
 

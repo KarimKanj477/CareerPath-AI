@@ -1,0 +1,54 @@
+import { NavLink, useNavigate } from "react-router-dom"
+import { useAuth } from "../context/useAuth"
+
+function Navbar() {
+    const { isAuthenticated, user, logout } = useAuth()
+    const navigate = useNavigate()
+
+    function handleLogout() {
+        logout()
+        navigate("/login", { replace: true })
+    }
+
+    return (
+        <nav className="navbar">
+            <NavLink to="/" className="navbar-brand">
+                CareerPath AI
+            </NavLink>
+
+            <div className="navbar-links">
+                {isAuthenticated ? (
+                    <>
+                        <NavLink to="/dashboard">
+                            Dashboard
+                        </NavLink>
+
+                        <span className="navbar-user">
+              {user?.firstname || user?.email || "User"}
+            </span>
+
+                        <button
+                            type="button"
+                            className="logout-button"
+                            onClick={handleLogout}
+                        >
+                            Logout
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <NavLink to="/login">
+                            Login
+                        </NavLink>
+
+                        <NavLink to="/register">
+                            Register
+                        </NavLink>
+                    </>
+                )}
+            </div>
+        </nav>
+    )
+}
+
+export default Navbar
