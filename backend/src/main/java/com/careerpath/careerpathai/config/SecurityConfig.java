@@ -97,6 +97,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/user-skills/**")
                         .authenticated()
 
+                        // Authenticated career recommendations
+                        .requestMatchers("/api/recommendations/**")
+                        .authenticated()
+
                         // Other modules remain temporarily public
                         .anyRequest()
                         .permitAll()
