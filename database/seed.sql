@@ -6,18 +6,96 @@ VALUES
 ('PROFESSIONAL','Working professional seeking new skills or a career change.'),
 ('ADMIN',       'Manages the system, career catalog, and application content.');
 
-INSERT INTO careers (title, description, category, averageSalary, demandLevel)
+
+INSERT INTO careers (
+    id,
+    title,
+    description,
+    category,
+    average_salary,
+    demand_level
+)
 VALUES
-('Software Engineer', 'Designs, develops, tests, and maintains software applications.', 'Software Development', 65000.00, 'HIGH'),
-('Data Analyst', 'Analyzes data to support business decisions and create reports.', 'Data', 55000.00, 'HIGH'),
-('UI/UX Designer', 'Designs user interfaces and improves user experience for digital products.', 'Design', 50000.00, 'MEDIUM'),
-('Web Developer', 'Builds and maintains websites and web applications.', 'Web Development', 52000.00, 'HIGH'),
-('Business Analyst', 'Analyzes business needs and helps translate them into technical requirements.', 'Business', 58000.00, 'MEDIUM'),
-('Cybersecurity Analyst', 'Protects systems and data by identifying and responding to security threats.', 'Cybersecurity', 70000.00, 'HIGH'),
-('Mobile Application Developer', 'Develops mobile applications for Android and iOS platforms.', 'Mobile Development', 60000.00, 'HIGH'),
-('DevOps Engineer', 'Manages deployment, automation, infrastructure, and CI/CD pipelines.', 'DevOps', 75000.00, 'HIGH'),
-('AI / Machine Learning Engineer', 'Builds AI models and machine learning systems to solve real-world problems.', 'Artificial Intelligence', 80000.00, 'HIGH'),
-('Cloud Engineer', 'Designs and manages cloud infrastructure and cloud based services.', 'Cloud Computing', 72000.00, 'HIGH');
+(
+    1,
+    'Senior Software Engineer',
+    'Designs complex software systems and leads development work.',
+    'Information Technology',
+    3500.00,
+    'HIGH'
+),
+(
+    2,
+    'Data Analyst',
+    'Analyzes data to support business decisions and create reports.',
+    'Data',
+    55000.00,
+    'HIGH'
+),
+(
+    3,
+    'UI/UX Designer',
+    'Designs user interfaces and improves user experience for digital products.',
+    'Design',
+    50000.00,
+    'MEDIUM'
+),
+(
+    4,
+    'Web Developer',
+    'Builds and maintains websites and web applications.',
+    'Web Development',
+    52000.00,
+    'HIGH'
+),
+(
+    5,
+    'Business Analyst',
+    'Analyzes business needs and helps translate them into technical requirements.',
+    'Business',
+    58000.00,
+    'MEDIUM'
+),
+(
+    6,
+    'Cybersecurity Analyst',
+    'Protects systems and data by identifying and responding to security threats.',
+    'Cybersecurity',
+    70000.00,
+    'HIGH'
+),
+(
+    7,
+    'Mobile Application Developer',
+    'Develops mobile applications for Android and iOS platforms.',
+    'Mobile Development',
+    60000.00,
+    'HIGH'
+),
+(
+    8,
+    'DevOps Engineer',
+    'Manages deployment, automation, infrastructure, and CI/CD pipelines.',
+    'DevOps',
+    75000.00,
+    'HIGH'
+),
+(
+    9,
+    'AI / Machine Learning Engineer',
+    'Builds AI models and machine learning systems to solve real-world problems.',
+    'Artificial Intelligence',
+    80000.00,
+    'HIGH'
+),
+(
+    10,
+    'Software Engineer',
+    'Designs and develops software applications.',
+    'Information Technology',
+    2500.00,
+    'HIGH'
+);
 
 INSERT INTO skills (name, description, category)
 VALUES
@@ -44,37 +122,78 @@ VALUES
 
 INSERT INTO career_skills (careerId, skillId, importance)
 VALUES
--- Software Engineer
-(1, 1, 'HIGH'),
-(1, 2, 'HIGH'),
-(1, 3, 'MEDIUM'),
-(1, 4, 'HIGH'),
-(1, 9, 'HIGH'),
-(1, 20, 'HIGH'),
--- Data Analyst
-(2, 2, 'HIGH'),
-(2, 8, 'HIGH'),
-(2, 14, 'HIGH'),
-(2, 17, 'HIGH'),
-(2, 18, 'MEDIUM'),
--- UI/UX Designer
-(3, 13, 'HIGH'),
-(3, 18, 'HIGH'),
-(3, 17, 'MEDIUM'),
--- Web Developer
-(4, 3, 'HIGH'),
-(4, 5, 'HIGH'),
-(4, 6, 'HIGH'),
-(4, 7, 'HIGH'),
-(4, 9, 'MEDIUM'),
--- Business Analyst
-(5, 2, 'MEDIUM'),
-(5, 14, 'HIGH'),
-(5, 17, 'HIGH'),
-(5, 18, 'HIGH');
 
--- Note: passwords below are plain text placeholders for local dev seed
--- data only. The backend must store BCrypt hashes, never plain text.
+-- Senior Software Engineer
+(1, 1,  'HIGH'),    -- Java
+(1, 2,  'HIGH'),    -- SQL
+(1, 3,  'MEDIUM'),  -- React
+(1, 4,  'HIGH'),    -- Spring Boot
+(1, 9,  'HIGH'),    -- Git
+(1, 20, 'HIGH'),    -- REST API
+
+-- Data Analyst
+(2, 2,  'HIGH'),    -- SQL
+(2, 8,  'HIGH'),    -- Python
+(2, 14, 'HIGH'),    -- Power BI
+(2, 17, 'HIGH'),    -- Problem Solving
+(2, 18, 'MEDIUM'),  -- Communication
+
+-- UI/UX Designer
+(3, 13, 'HIGH'),    -- Figma
+(3, 18, 'HIGH'),    -- Communication
+(3, 17, 'MEDIUM'),  -- Problem Solving
+
+-- Web Developer
+(4, 3, 'HIGH'),     -- React
+(4, 5, 'HIGH'),     -- HTML
+(4, 6, 'HIGH'),     -- CSS
+(4, 7, 'HIGH'),     -- JavaScript
+(4, 9, 'MEDIUM'),   -- Git
+
+-- Business Analyst
+(5, 2,  'MEDIUM'),  -- SQL
+(5, 14, 'HIGH'),    -- Power BI
+(5, 17, 'HIGH'),    -- Problem Solving
+(5, 18, 'HIGH'),    -- Communication
+
+-- Cybersecurity Analyst
+(6, 16, 'HIGH'),    -- Networking
+(6, 15, 'HIGH'),    -- Linux
+(6, 17, 'HIGH'),    -- Problem Solving
+(6, 18, 'MEDIUM'),  -- Communication
+(6, 9,  'MEDIUM'),  -- Git
+
+-- Mobile Application Developer
+(7, 1,  'HIGH'),    -- Java
+(7, 7,  'HIGH'),    -- JavaScript
+(7, 20, 'HIGH'),    -- REST API
+(7, 9,  'MEDIUM'),  -- Git
+(7, 17, 'HIGH'),    -- Problem Solving
+
+-- DevOps Engineer
+(8, 11, 'HIGH'),    -- Docker
+(8, 15, 'HIGH'),    -- Linux
+(8, 9,  'HIGH'),    -- Git
+(8, 10, 'MEDIUM'),  -- GitHub
+(8, 19, 'HIGH'),    -- Cloud Computing
+(8, 16, 'MEDIUM'),  -- Networking
+
+-- AI / Machine Learning Engineer
+(9, 8,  'HIGH'),    -- Python
+(9, 2,  'MEDIUM'),  -- SQL
+(9, 17, 'HIGH'),    -- Problem Solving
+(9, 9,  'MEDIUM'),  -- Git
+(9, 19, 'MEDIUM'),  -- Cloud Computing
+
+-- Software Engineer
+(10, 1,  'HIGH'),    -- Java
+(10, 2,  'MEDIUM'),  -- SQL
+(10, 9,  'HIGH'),    -- Git
+(10, 17, 'HIGH'),    -- Problem Solving
+(10, 18, 'MEDIUM'),  -- Communication
+(10, 20, 'HIGH');    -- REST API
+
+
 INSERT INTO users
 (firstname, lastname, email, password, experienceLevel, roleId)
 VALUES
