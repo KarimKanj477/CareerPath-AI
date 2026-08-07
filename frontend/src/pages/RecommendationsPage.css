@@ -1,0 +1,169 @@
+.recommendations-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+}
+
+.recommendations-header {
+    margin-bottom: 30px;
+}
+
+.recommendations-label {
+    margin: 0 0 8px;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.recommendations-header h1 {
+    margin: 0 0 10px;
+    font-size: 34px;
+}
+
+.recommendations-header p {
+    margin: 0;
+    line-height: 1.6;
+}
+
+.recommendations-list {
+    display: grid;
+    gap: 20px;
+}
+
+.recommendation-card {
+    padding: 24px;
+    border: 1px solid #dcdcdc;
+    border-radius: 14px;
+    background: #ffffff;
+}
+
+.recommendation-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.recommendation-rank {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.recommendation-card h2 {
+    margin: 0 0 6px;
+    font-size: 24px;
+}
+
+.recommendation-category {
+    margin: 0;
+    font-size: 14px;
+}
+
+.match-score {
+    min-width: 90px;
+    text-align: center;
+    padding: 12px;
+    border: 1px solid #dcdcdc;
+    border-radius: 12px;
+}
+
+.match-score strong {
+    display: block;
+    font-size: 22px;
+}
+
+.match-score span {
+    display: block;
+    margin-top: 4px;
+    font-size: 13px;
+}
+
+.recommendation-description {
+    margin: 18px 0;
+    line-height: 1.6;
+}
+
+.career-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.career-details span {
+    padding: 7px 10px;
+    border: 1px solid #e3e3e3;
+    border-radius: 8px;
+}
+
+.skill-gap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.skill-section h3 {
+    margin: 0 0 10px;
+    font-size: 16px;
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-tag {
+    display: inline-block;
+    padding: 7px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+    border: 1px solid #dcdcdc;
+}
+
+.skill-tag.matched {
+    font-weight: 600;
+}
+
+.skill-tag.missing {
+    opacity: 0.85;
+}
+
+.skill-empty {
+    margin: 0;
+    font-size: 14px;
+}
+
+.recommendations-error,
+.recommendations-empty {
+    padding: 20px;
+    border: 1px solid #dcdcdc;
+    border-radius: 12px;
+}
+
+@media (max-width: 700px) {
+    .recommendation-top {
+        flex-direction: column;
+    }
+
+    .match-score {
+        width: 100%;
+    }
+
+    .skill-gap-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .recommendations-header h1 {
+        font-size: 28px;
+    }
+}
+.recommendations-skills-link {
+    display: inline-block;
+    margin-top: 14px;
+    font-weight: 600;
+    text-decoration: none;
+}

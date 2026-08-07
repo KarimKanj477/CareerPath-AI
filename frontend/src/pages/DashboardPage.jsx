@@ -60,7 +60,9 @@ function DashboardPage() {
                         abilities.
                     </p>
 
-                    <span>Recommendation module coming soon</span>
+                    <Link to="/recommendations">
+                        View Career Recommendations →
+                    </Link>
                 </article>
 
                 <article className="dashboard-card">

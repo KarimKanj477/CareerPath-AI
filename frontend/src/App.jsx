@@ -8,14 +8,13 @@ import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
 import DashboardPage from "./pages/DashboardPage"
 import ProtectedRoute from "./routes/ProtectedRoute"
-import Navbar from "./components/Navbar"
 import PublicRoute from "./routes/PublicRoute"
 import MySkillsPage from "./pages/MySkillsPage"
+import RecommendationsPage from "./pages/RecommendationsPage"
 
 function App() {
     return (
         <>
-            <Navbar />
 
             <Routes>
                 <Route
@@ -54,6 +53,15 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <MySkillsPage />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/recommendations"
+                    element={
+                        <ProtectedRoute>
+                            <RecommendationsPage />
                         </ProtectedRoute>
                     }
                 />

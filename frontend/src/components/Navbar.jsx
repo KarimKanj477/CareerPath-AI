@@ -12,7 +12,7 @@ function Navbar() {
 
     return (
         <nav className="navbar">
-            <NavLink to="/" className="navbar-brand">
+            <NavLink to="/dashboard" className="navbar-brand">
                 CareerPath AI
             </NavLink>
 
