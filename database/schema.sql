@@ -130,18 +130,16 @@ CREATE TABLE roadmaps (
 CREATE TABLE roadmap_steps (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     roadmapId   INT NOT NULL,
-    skillId     INT,
+    skillId     INT NULL,
     title       VARCHAR(150),
     description TEXT,
-    stepOrder   INT NOT NULL,
-    status      VARCHAR(50) NOT NULL DEFAULT 'NOT_STARTED',
-    createdAt   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
+    stepOrder   INT,
+    status      VARCHAR(50),
     FOREIGN KEY (roadmapId) REFERENCES roadmaps(id) ON DELETE CASCADE,
-    FOREIGN KEY (skillId) REFERENCES skills(id) ON DELETE SET NULL,
+    FOREIGN KEY (skillId) REFERENCES skills(id) ON DELETE SET NULL
 
     UNIQUE (roadmapId, stepOrder)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+);ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
 -- learning_resources
