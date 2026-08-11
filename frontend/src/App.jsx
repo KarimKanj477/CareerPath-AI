@@ -11,6 +11,7 @@ import ProtectedRoute from "./routes/ProtectedRoute"
 import PublicRoute from "./routes/PublicRoute"
 import MySkillsPage from "./pages/MySkillsPage"
 import RecommendationsPage from "./pages/RecommendationsPage"
+import RoadmapsPage from "./pages/RoadmapsPage"
 
 function App() {
     return (
@@ -65,7 +66,19 @@ function App() {
                         </ProtectedRoute>
                     }
                 />
+
+                <Route
+                    path="/roadmaps"
+                    element={
+                        <ProtectedRoute>
+                            <RoadmapsPage />
+                        </ProtectedRoute>
+                    }
+                />
+
             </Routes>
+
+
         </>
     )
 }

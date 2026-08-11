@@ -23,9 +23,21 @@ function Navbar() {
                             Dashboard
                         </NavLink>
 
+                        <NavLink to="/skills">
+                            My Skills
+                        </NavLink>
+
+                        <NavLink to="/recommendations">
+                            Recommendations
+                        </NavLink>
+
+                        <NavLink to="/roadmaps">
+                            My Roadmaps
+                        </NavLink>
+
                         <span className="navbar-user">
-              {user?.firstname || user?.email || "User"}
-            </span>
+                            {user?.firstname || user?.email || "User"}
+                        </span>
 
                         <button
                             type="button"

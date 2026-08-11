@@ -101,6 +101,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/recommendations/**")
                         .authenticated()
 
+                        .requestMatchers("/api/roadmaps/**")
+                        .authenticated()
+
                         // Other modules remain temporarily public
                         .anyRequest()
                         .permitAll()

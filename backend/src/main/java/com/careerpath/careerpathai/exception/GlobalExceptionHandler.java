@@ -114,6 +114,22 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
+    @ExceptionHandler(RoadmapNotFoundException.class)
+    public ResponseEntity<ApiResponse<Object>> handleRoadmapNotFound(
+            RoadmapNotFoundException exception) {
+
+        ApiResponse<Object> response =
+                new ApiResponse<>(
+                        false,
+                        exception.getMessage(),
+                        null
+                );
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(response);
+    }
+
 
 
 

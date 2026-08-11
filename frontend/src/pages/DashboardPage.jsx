@@ -65,7 +65,10 @@ function DashboardPage() {
                     </Link>
                 </article>
 
-                <article className="dashboard-card">
+                <Link
+                    to="/roadmaps"
+                    className="dashboard-card dashboard-card-link"
+                >
                     <h2>Learning Roadmap</h2>
 
                     <p>
@@ -73,8 +76,8 @@ function DashboardPage() {
                         selected career.
                     </p>
 
-                    <span>Roadmap module coming soon</span>
-                </article>
+                    <span>Open My Roadmaps →</span>
+                </Link>
             </section>
         </main>
     )

@@ -167,3 +167,33 @@
     font-weight: 600;
     text-decoration: none;
 }
+.recommendation-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.generate-roadmap-button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.generate-roadmap-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.roadmap-success-message,
+.roadmap-error-message {
+    margin: 16px 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+}
+
+.roadmap-not-needed {
+    font-size: 14px;
+    font-weight: 600;
+}

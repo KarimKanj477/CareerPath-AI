@@ -3,11 +3,13 @@ package com.careerpath.careerpathai.service.impl;
 import com.careerpath.careerpathai.dto.RoadmapResponseDTO;
 import com.careerpath.careerpathai.dto.RoadmapStepResponseDTO;
 import com.careerpath.careerpathai.entity.*;
+import com.careerpath.careerpathai.exception.CareerNotFoundException;
 import com.careerpath.careerpathai.exception.UserNotFoundException;
 import com.careerpath.careerpathai.repository.*;
 import com.careerpath.careerpathai.service.RoadmapService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.careerpath.careerpathai.exception.RoadmapNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -57,7 +59,7 @@ public class RoadmapServiceImpl implements RoadmapService {
 
         Career career = careerRepository.findById(careerId)
                 .orElseThrow(() ->
-                        new IllegalArgumentException(
+                        new CareerNotFoundException(
                                 "Career not found with id: " + careerId
                         )
                 );
@@ -209,8 +211,8 @@ public class RoadmapServiceImpl implements RoadmapService {
                                 user.getId()
                         )
                         .orElseThrow(() ->
-                                new IllegalArgumentException(
-                                        "Roadmap not found"
+                                new RoadmapNotFoundException(
+                                        "Roadmap not found with id: " +roadmapId
                                 )
                         );
 
