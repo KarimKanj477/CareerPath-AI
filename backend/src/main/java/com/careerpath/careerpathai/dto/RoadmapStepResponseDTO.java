@@ -1,5 +1,7 @@
 package com.careerpath.careerpathai.dto;
 
+import java.util.List;
+
 public class RoadmapStepResponseDTO {
 
     private Integer id;
@@ -9,19 +11,13 @@ public class RoadmapStepResponseDTO {
     private String description;
     private Integer stepOrder;
     private String status;
+    private List<LearningResourceDTO> resources;
 
     public RoadmapStepResponseDTO() {
     }
 
-    public RoadmapStepResponseDTO(
-            Integer id,
-            Integer skillId,
-            String skillName,
-            String title,
-            String description,
-            Integer stepOrder,
-            String status
-    ) {
+    public RoadmapStepResponseDTO(Integer id, Integer skillId, String skillName, String title, String description,
+                                  Integer stepOrder, String status, List<LearningResourceDTO> resources) {
         this.id = id;
         this.skillId = skillId;
         this.skillName = skillName;
@@ -29,6 +25,7 @@ public class RoadmapStepResponseDTO {
         this.description = description;
         this.stepOrder = stepOrder;
         this.status = status;
+        this.resources = resources;
     }
 
     public Integer getId() {
@@ -85,5 +82,13 @@ public class RoadmapStepResponseDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<LearningResourceDTO> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<LearningResourceDTO> resources) {
+        this.resources = resources;
     }
 }

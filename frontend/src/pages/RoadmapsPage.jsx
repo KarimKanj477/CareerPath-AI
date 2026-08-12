@@ -145,6 +145,47 @@ function RoadmapsPage() {
                                                     {step.status}
                                                 </span>
 
+                                                {step.resources && step.resources.length > 0 && (
+                                                    <div className="roadmap-resources">
+
+                                                        <h4>Learning Resources</h4>
+
+                                                        {step.resources.map((resource) => (
+                                                            <div
+                                                                className="roadmap-resource"
+                                                                key={resource.id}
+                                                            >
+                                                                <div>
+                                                                    <strong>
+                                                                        {resource.title}
+                                                                    </strong>
+
+                                                                    <p>
+                                                                        {resource.provider}
+                                                                        {resource.type
+                                                                            ? ` • ${resource.type}`
+                                                                            : ""}
+                                                                        {resource.isFree
+                                                                            ? " • Free"
+                                                                            : ""}
+                                                                    </p>
+                                                                </div>
+
+                                                                {resource.url && (
+                                                                    <a
+                                                                        href={resource.url}
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                    >
+                                                                        Open Resource →
+                                                                    </a>
+                                                                )}
+                                                            </div>
+                                                        ))}
+
+                                                    </div>
+                                                )}
+
                                             </div>
 
                                         </div>

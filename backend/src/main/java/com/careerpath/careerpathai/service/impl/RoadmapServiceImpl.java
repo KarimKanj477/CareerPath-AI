@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import com.careerpath.careerpathai.dto.LearningResourceDTO;
 
 @Service
 public class RoadmapServiceImpl implements RoadmapService {
@@ -26,6 +27,7 @@ public class RoadmapServiceImpl implements RoadmapService {
     private final CareerSkillRepository careerSkillRepository;
     private final RoadmapRepository roadmapRepository;
     private final RoadmapStepRepository roadmapStepRepository;
+    private final LearningResourceRepository learningResourceRepository;
 
     public RoadmapServiceImpl(
             UserRepository userRepository,
@@ -33,7 +35,8 @@ public class RoadmapServiceImpl implements RoadmapService {
             UserSkillRepository userSkillRepository,
             CareerSkillRepository careerSkillRepository,
             RoadmapRepository roadmapRepository,
-            RoadmapStepRepository roadmapStepRepository
+            RoadmapStepRepository roadmapStepRepository,
+            LearningResourceRepository learningResourceRepository
     ) {
         this.userRepository = userRepository;
         this.careerRepository = careerRepository;
@@ -41,6 +44,7 @@ public class RoadmapServiceImpl implements RoadmapService {
         this.careerSkillRepository = careerSkillRepository;
         this.roadmapRepository = roadmapRepository;
         this.roadmapStepRepository = roadmapStepRepository;
+        this.learningResourceRepository=learningResourceRepository;
     }
 
     @Override
@@ -237,9 +241,32 @@ public class RoadmapServiceImpl implements RoadmapService {
             Integer skillId = null;
             String skillName = null;
 
+            List<LearningResourceDTO> resourceDTOs =
+                    new ArrayList<>();
+
             if (step.getSkill() != null) {
+
                 skillId = step.getSkill().getId();
                 skillName = step.getSkill().getName();
+
+                List<LearningResource> resources =
+                        learningResourceRepository
+                                .findAllBySkill_Id(skillId);
+
+                for (LearningResource resource : resources) {
+
+                    LearningResourceDTO resourceDTO =
+                            new LearningResourceDTO(
+                                    resource.getId(),
+                                    resource.getTitle(),
+                                    resource.getUrl(),
+                                    resource.getType(),
+                                    resource.getProvider(),
+                                    resource.getIsFree()
+                            );
+
+                    resourceDTOs.add(resourceDTO);
+                }
             }
 
             RoadmapStepResponseDTO stepDTO =
@@ -250,7 +277,8 @@ public class RoadmapServiceImpl implements RoadmapService {
                             step.getTitle(),
                             step.getDescription(),
                             step.getStepOrder(),
-                            step.getStatus()
+                            step.getStatus(),
+                            resourceDTOs
                     );
 
             stepDTOs.add(stepDTO);
