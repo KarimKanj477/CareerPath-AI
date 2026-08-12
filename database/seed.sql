@@ -239,6 +239,40 @@ VALUES
 (3, 'React Official Documentation', 'https://react.dev/', 'Documentation', 'React', TRUE),
 (4, 'Spring Boot Documentation', 'https://spring.io/projects/spring-boot', 'Documentation', 'Spring', TRUE),
 (11, 'Docker Getting Started', 'https://docs.docker.com/get-started/', 'Documentation', 'Docker', TRUE);
+(5,'HTML Learning Module','https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content','Tutorial','MDN Web Docs',1),
+
+-- CSS
+(6,'CSS Styling Basics','https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics','Tutorial','MDN Web Docs',1),
+
+-- JavaScript
+(7,'JavaScript Learning Module','https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting','Tutorial', 'MDN Web Docs', 1),
+
+-- Python
+(8,'Python Official Documentation','https://docs.python.org/3/','Documentation','Python',1),
+
+-- GitHub
+(10,'GitHub Documentation','https://docs.github.com/en','Documentation','GitHub',1),
+
+-- MySQL
+(12,'MySQL Official Tutorial','https://dev.mysql.com/doc/mysql-tutorial-excerpt/8.0/en/','Tutorial','MySQL',1),
+
+-- Figma
+(13,'Figma Design for Beginners','https://help.figma.com/hc/en-us/articles/30848209492887-Course-overview-Figma-Design-for-beginners-2025','Course','Figma',1),
+
+-- Power BI
+(14,'Power BI Learning','https://learn.microsoft.com/en-us/training/powerplatform/power-bi','Learning Path','Microsoft Learn',1),
+
+-- Linux
+(15,'Introduction to Linux','https://training.linuxfoundation.org/training/introduction-to-linux/','Course','Linux Foundation',1),
+
+-- Cloud Computing
+(19,'AWS Cloud Practitioner Learning','https://aws.amazon.com/training/learn-about/cloud-practitioner/','Learning Path','AWS',1),
+
+-- REST API
+(20,'Building a RESTful Web Service','https://spring.io/guides/gs/rest-service/','Tutorial','Spring',1),
+
+-- ASP.NET
+(21,'ASP.NET Core Fundamentals','https://learn.microsoft.com/en-us/training/paths/aspnet-core-fundamentals/','Learning Path','Microsoft Learn', 1);
 
 INSERT INTO progress_tracking
 (userId, roadmapStepId, status, completionDate, progressPercentage)
