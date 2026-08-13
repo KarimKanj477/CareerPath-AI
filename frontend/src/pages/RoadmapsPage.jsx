@@ -1,14 +1,21 @@
 import { useEffect, useState } from "react"
 import { useAuth } from "../context/useAuth"
 import { getMyRoadmaps } from "../services/roadmapService"
+import {
+    getMyProgress,
+    updateProgress,
+} from "../services/progressService"
 import "./RoadmapsPage.css"
 
 function RoadmapsPage() {
     const { token } = useAuth()
 
     const [roadmaps, setRoadmaps] = useState([])
+    const [progressByStep, setProgressByStep] = useState({})
     const [isLoading, setIsLoading] = useState(true)
     const [errorMessage, setErrorMessage] = useState("")
+    const [progressError, setProgressError] = useState("")
+    const [updatingStepId, setUpdatingStepId] = useState(null)
 
     useEffect(() => {
         async function loadRoadmaps() {
@@ -16,9 +23,22 @@ function RoadmapsPage() {
                 setIsLoading(true)
                 setErrorMessage("")
 
-                const data = await getMyRoadmaps(token)
+                const [roadmapData, progressData] =
+                    await Promise.all([
+                        getMyRoadmaps(token),
+                        getMyProgress(token),
+                    ])
 
-                setRoadmaps(data)
+                setRoadmaps(roadmapData)
+
+                const progressMap = {}
+
+                progressData.forEach((progress) => {
+                    progressMap[progress.roadmapStepId] =
+                        progress
+                })
+
+                setProgressByStep(progressMap)
             } catch (error) {
                 setErrorMessage(
                     error.message ||
@@ -31,6 +51,35 @@ function RoadmapsPage() {
 
         loadRoadmaps()
     }, [token])
+
+    async function handleProgressUpdate(
+        roadmapStepId,
+        percentage
+    ) {
+        try {
+            setUpdatingStepId(roadmapStepId)
+            setProgressError("")
+
+            const updatedProgress =
+                await updateProgress(
+                    token,
+                    roadmapStepId,
+                    percentage
+                )
+
+            setProgressByStep((currentProgress) => ({
+                ...currentProgress,
+                [roadmapStepId]: updatedProgress,
+            }))
+        } catch (error) {
+            setProgressError(
+                error.message ||
+                "Unable to update progress"
+            )
+        } finally {
+            setUpdatingStepId(null)
+        }
+    }
 
     if (isLoading) {
         return (
@@ -62,9 +111,16 @@ function RoadmapsPage() {
 
                 <p>
                     Follow the personalized steps generated
-                    for your selected careers.
+                    for your selected careers and track
+                    your learning progress.
                 </p>
             </section>
+
+            {progressError && (
+                <p className="roadmaps-error">
+                    {progressError}
+                </p>
+            )}
 
             {roadmaps.length === 0 ? (
                 <section className="roadmaps-empty">
@@ -113,84 +169,205 @@ function RoadmapsPage() {
 
                                 <div className="roadmap-steps">
 
-                                    {roadmap.steps.map((step) => (
+                                    {roadmap.steps.map((step) => {
 
-                                        <div
-                                            className="roadmap-step"
-                                            key={step.id}
-                                        >
+                                        const progress =
+                                            progressByStep[
+                                                step.id
+                                                ]
 
-                                            <div className="roadmap-step-number">
-                                                {step.stepOrder}
-                                            </div>
+                                        const percentage =
+                                            progress
+                                                ?.progressPercentage ??
+                                            0
 
-                                            <div className="roadmap-step-content">
+                                        const status =
+                                            progress?.status ||
+                                            step.status ||
+                                            "Not Started"
 
-                                                <h3>
-                                                    {step.title}
-                                                </h3>
+                                        return (
+                                            <div
+                                                className="roadmap-step"
+                                                key={step.id}
+                                            >
 
-                                                {step.skillName && (
-                                                    <p className="roadmap-step-skill">
-                                                        Skill:{" "}
-                                                        {step.skillName}
+                                                <div className="roadmap-step-number">
+                                                    {
+                                                        step.stepOrder
+                                                    }
+                                                </div>
+
+                                                <div className="roadmap-step-content">
+
+                                                    <h3>
+                                                        {
+                                                            step.title
+                                                        }
+                                                    </h3>
+
+                                                    {step.skillName && (
+                                                        <p className="roadmap-step-skill">
+                                                            Skill:{" "}
+                                                            {
+                                                                step.skillName
+                                                            }
+                                                        </p>
+                                                    )}
+
+                                                    <p>
+                                                        {
+                                                            step.description
+                                                        }
                                                     </p>
-                                                )}
 
-                                                <p>
-                                                    {step.description}
-                                                </p>
+                                                    <span className="roadmap-step-status">
+                                                        {status}
+                                                    </span>
 
-                                                <span className="roadmap-step-status">
-                                                    {step.status}
-                                                </span>
+                                                    <div className="roadmap-progress">
 
-                                                {step.resources && step.resources.length > 0 && (
-                                                    <div className="roadmap-resources">
+                                                        <div className="roadmap-progress-header">
+                                                            <strong>
+                                                                Progress
+                                                            </strong>
 
-                                                        <h4>Learning Resources</h4>
+                                                            <span>
+                                                                {
+                                                                    percentage
+                                                                }
+                                                                %
+                                                            </span>
+                                                        </div>
 
-                                                        {step.resources.map((resource) => (
+                                                        <div className="roadmap-progress-bar">
                                                             <div
-                                                                className="roadmap-resource"
-                                                                key={resource.id}
-                                                            >
-                                                                <div>
-                                                                    <strong>
-                                                                        {resource.title}
-                                                                    </strong>
+                                                                className="roadmap-progress-fill"
+                                                                style={{
+                                                                    width: `${percentage}%`,
+                                                                }}
+                                                            />
+                                                        </div>
 
-                                                                    <p>
-                                                                        {resource.provider}
-                                                                        {resource.type
-                                                                            ? ` • ${resource.type}`
-                                                                            : ""}
-                                                                        {resource.isFree
-                                                                            ? " • Free"
-                                                                            : ""}
-                                                                    </p>
-                                                                </div>
+                                                        <div className="roadmap-progress-actions">
 
-                                                                {resource.url && (
-                                                                    <a
-                                                                        href={resource.url}
-                                                                        target="_blank"
-                                                                        rel="noopener noreferrer"
+                                                            {[
+                                                                0,
+                                                                25,
+                                                                50,
+                                                                75,
+                                                                100,
+                                                            ].map(
+                                                                (
+                                                                    value
+                                                                ) => (
+                                                                    <button
+                                                                        type="button"
+                                                                        key={
+                                                                            value
+                                                                        }
+                                                                        className={
+                                                                            percentage ===
+                                                                            value
+                                                                                ? "progress-button active"
+                                                                                : "progress-button"
+                                                                        }
+                                                                        disabled={
+                                                                            updatingStepId ===
+                                                                            step.id
+                                                                        }
+                                                                        onClick={() =>
+                                                                            handleProgressUpdate(
+                                                                                step.id,
+                                                                                value
+                                                                            )
+                                                                        }
                                                                     >
-                                                                        Open Resource →
-                                                                    </a>
-                                                                )}
-                                                            </div>
-                                                        ))}
+                                                                        {
+                                                                            value
+                                                                        }
+                                                                        %
+                                                                    </button>
+                                                                )
+                                                            )}
+
+                                                        </div>
 
                                                     </div>
-                                                )}
+
+                                                    {step.resources &&
+                                                        step.resources
+                                                            .length >
+                                                        0 && (
+
+                                                            <div className="roadmap-resources">
+
+                                                                <h4>
+                                                                    Learning
+                                                                    Resources
+                                                                </h4>
+
+                                                                {step.resources.map(
+                                                                    (
+                                                                        resource
+                                                                    ) => (
+
+                                                                        <div
+                                                                            className="roadmap-resource"
+                                                                            key={
+                                                                                resource.id
+                                                                            }
+                                                                        >
+
+                                                                            <div>
+                                                                                <strong>
+                                                                                    {
+                                                                                        resource.title
+                                                                                    }
+                                                                                </strong>
+
+                                                                                <p>
+                                                                                    {
+                                                                                        resource.provider
+                                                                                    }
+
+                                                                                    {resource.type
+                                                                                        ? ` • ${resource.type}`
+                                                                                        : ""}
+
+                                                                                    {resource.isFree
+                                                                                        ? " • Free"
+                                                                                        : ""}
+                                                                                </p>
+                                                                            </div>
+
+                                                                            {resource.url && (
+                                                                                <a
+                                                                                    href={
+                                                                                        resource.url
+                                                                                    }
+                                                                                    target="_blank"
+                                                                                    rel="noopener noreferrer"
+                                                                                >
+                                                                                    Open
+                                                                                    Resource
+                                                                                    →
+                                                                                </a>
+                                                                            )}
+
+                                                                        </div>
+
+                                                                    )
+                                                                )}
+
+                                                            </div>
+                                                        )}
+
+                                                </div>
 
                                             </div>
-
-                                        </div>
-
-                                    ))}
+                                        )
+                                    })}
 
                                 </div>
 
