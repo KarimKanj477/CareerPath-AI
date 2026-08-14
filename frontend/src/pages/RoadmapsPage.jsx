@@ -61,16 +61,14 @@ function RoadmapsPage() {
             setProgressError("")
 
             const updatedProgress =
-                await updateProgress(
-                    token,
-                    roadmapStepId,
-                    percentage
-                )
+                await updateProgress(token, roadmapStepId, percentage)
 
             setProgressByStep((currentProgress) => ({
                 ...currentProgress,
                 [roadmapStepId]: updatedProgress,
             }))
+            const refreshedRoadmaps = await getMyRoadmaps(token);
+            setRoadmaps(refreshedRoadmaps);
         } catch (error) {
             setProgressError(
                 error.message ||
