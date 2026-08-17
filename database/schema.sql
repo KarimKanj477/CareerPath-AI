@@ -81,8 +81,8 @@ CREATE TABLE user_skills (
     level     VARCHAR(50),
     createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (skillId) REFERENCES skills(id) ON DELETE CASCADE,
+    FOREIGN KEY (userId) REFERENCES users(id) ,
+    FOREIGN KEY (skillId) REFERENCES skills(id) ,
 
     UNIQUE (userId, skillId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -100,11 +100,11 @@ CREATE TABLE roadmaps (
 
     FOREIGN KEY (userId)
         REFERENCES users(id)
-        ON DELETE CASCADE,
+        ,
 
     FOREIGN KEY (careerId)
         REFERENCES careers(id)
-        ON DELETE CASCADE
+       
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
@@ -120,8 +120,7 @@ CREATE TABLE roadmap_steps (
                                status      VARCHAR(50),
 
                                FOREIGN KEY (roadmapId)
-                                   REFERENCES roadmaps(id)
-                                   ON DELETE CASCADE,
+                                   REFERENCES roadmaps(id),
 
                                FOREIGN KEY (skillId)
                                    REFERENCES skills(id)
@@ -143,7 +142,7 @@ CREATE TABLE learning_resources (
 
                                     FOREIGN KEY (skillId)
                                         REFERENCES skills(id)
-                                        ON DELETE CASCADE
+                                        
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
