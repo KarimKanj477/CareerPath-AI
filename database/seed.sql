@@ -218,9 +218,6 @@ VALUES
 (1, 17, 'Advanced'),      -- Problem Solving
 (1, 18, 'Advanced');      -- Communication
 
-INSERT INTO certifications (userId, name, issuer, issueDate, expiryDate, credentialUrl)
-VALUES
-(1, 'Oracle Certified Associate, Java SE Programmer', 'Oracle', '2024-05-01', NULL, 'https://example.com/credential/123');
 
 INSERT INTO roadmaps
 (userId, careerId, title, status, createdAt)
@@ -330,7 +327,4 @@ VALUES
     (1, 4, 'Not Started', NULL, 0),
     (1, 5, 'Not Started', NULL, 0);
 
-INSERT INTO chat_history (userId, sender, message)
-VALUES
-(1, 'USER', 'What skills do I still need to become a Software Engineer?'),
-(1, 'AI', 'Based on your profile, focus next on Spring Boot and React — you already have a solid Java and SQL foundation.');
+
