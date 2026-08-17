@@ -118,7 +118,9 @@ VALUES
 ('Problem Solving','Ability to analyze problems and develop effective solutions.','Soft Skill'),
 ('Communication','Ability to communicate effectively with team members and clients.','Soft Skill'),
 ('Cloud Computing','Knowledge of cloud platforms and cloud-based services.','Cloud'),
-('REST API','Architecture used for communication between frontend and backend applications.','Backend Development');
+('REST API','Architecture used for communication between frontend and backend applications.','Backend Development'),
+('ASP.NET','Framework used to build web applications and APIs using .NET.','Backend Framework');
+
 
 INSERT INTO career_skills (careerId, skillId, importance)
 VALUES
