@@ -1,240 +1,84 @@
-# CareerPath AI
+# Database — CareerPath AI
 
-## Overview
+This folder contains the MySQL schema for CareerPath AI.
 
-CareerPath AI is an intelligent career guidance and skill development platform designed to help students, graduates, and professionals identify the skills required for their desired careers and create personalized learning roadmaps.
+## Prerequisites
 
-The platform analyzes the gap between a user's current skills and the skills required for a target job role, then generates a structured learning path along with recommended learning resources to help users achieve their career goals efficiently.
+- MySQL 8.0+ (or a Docker container running MySQL 8)
+- MySQL CLI or a GUI client (MySQL Workbench, VS Code MySQL extension, DBeaver, etc.)
 
----
+## Setup
 
-## Problem Statement
+### Option 1 — Local MySQL install
 
-Many students and graduates struggle to:
-
-* Choose the right career path.
-* Understand the skills required for specific jobs.
-* Identify gaps in their current skill set.
-* Find reliable learning resources.
-* Follow a structured learning plan.
-
-CareerPath AI addresses these challenges by providing personalized career guidance and skill development recommendations.
-
----
-
-## Objectives
-
-* Help users discover suitable career paths.
-* Identify required skills for different job roles.
-* Analyze skill gaps between current and target skills.
-* Generate personalized learning roadmaps.
-* Recommend free and paid learning resources.
-* Provide AI-powered career guidance.
-* Track user progress throughout the learning journey.
-
----
-
-## Key Features
-
-### Career Discovery
-
-Users can explore various career fields and specializations, including:
-
-* Software Engineering
-* Data Science
-* Artificial Intelligence
-* Cybersecurity
-* Cloud Computing
-* UI/UX Design
-* Digital Marketing
-* Project Management
-
-Each career includes descriptions, responsibilities, required skills, industry insights, and learning pathways.
-
-### Skill Assessment
-
-Users can enter and manage their:
-
-* Technical skills
-* Soft skills
-* Certifications
-* Experience level
-
-The system maintains a personalized skill profile for each user.
-
-### Skill Gap Analysis
-
-The platform compares a user's current skills with the skills required for a selected career path and identifies:
-
-* Existing skills
-* Missing skills
-* Recommended next learning steps
-
-### Personalized Roadmap Generation
-
-Based on the skill gap analysis, CareerPath AI generates a customized roadmap consisting of learning phases, milestones, and recommended activities.
-
-### Learning Resource Recommendations
-
-The system recommends learning resources according to user preferences:
-
-* Free resources
-* Paid resources
-* Online courses
-* Documentation
-* Tutorials
-* Educational videos
-
-### AI Career Advisor
-
-An AI-powered chatbot assists users by answering career-related questions and providing personalized recommendations.
-
-### Progress Tracking
-
-Users can monitor:
-
-* Completed skills
-* Skills currently in progress
-* Roadmap completion percentage
-* Learning milestones and achievements
-
----
-
-## Target Users
-
-* University Students
-* Fresh Graduates
-* Career Changers
-* Professionals Seeking New Skills
-* Self-Learners
-
----
-
-## Technology Stack
-
-### Frontend
-
-* React
-* TypeScript
-* HTML5
-* CSS3
-* Bootstrap
-
-### Backend
-
-* Java Spring Boot
-
-### Database
-
-* MySQL
-
-### AI Integration
-
-* Google Gemini API
-
-### Development & Collaboration Tools
-
-* Git & GitHub
-* GitHub Actions (CI/CD)
-* Jira
-* Postman
-* Docker
-
----
-
-## Database
-
-The application uses MySQL to store and manage user data, career information, skills, learning resources, and personalized learning roadmaps.
-
-### Main Entities
-
-* Users
-* Roles
-* Careers
-* Skills
-* UserSkills
-* CareerSkills
-* Roadmaps
-* RoadmapSteps
-* LearningResources
-* ProgressTracking
-
----
-
-## Project Workflow
-
-1. User creates an account and logs in.
-2. User selects a target career or specialization.
-3. User enters their current skills and experience.
-4. The system analyzes the skill gap.
-5. Missing skills are identified.
-6. A personalized learning roadmap is generated.
-7. AI recommends relevant learning resources.
-8. User tracks progress and updates completed skills.
-
----
-
-## Project Structure
-
-```text
-CareerPath-AI/
-│
-├── docs/
-├── frontend/
-├── backend/
-├── database/
-├── README.md
-└── LICENSE
+```bash
+mysql -u root -p < schema_v2.sql
 ```
 
----
+### Option 2 — Docker
 
-## Team Members
+```bash
+docker run --name careerpath-mysql -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mysql:8
+mysql -h 127.0.0.1 -u root -p < schema_v2.sql
+```
 
-### Team Leader
+Enter your password when prompted. This creates the `careerpath_ai` database along with all tables and inserts the default roles (`STUDENT`, `PROFESSIONAL`, `ADMIN`).
 
-* Karim Kanj
+### Verify it worked
 
-### Team Members
+```bash
+mysql -u root -p -e "USE careerpath_ai; SHOW TABLES;"
+```
 
-* Leen ElBaba
-* Kawthar Tleis
-* Mohamad Al Sayed
-* Mohamad Yahfoufe
+You should see 11 tables listed.
 
----
+## Connecting from the backend (Spring Boot)
 
-## Development Methodology
+Add these to your `application.properties` (or `.env`):
 
-The project follows a collaborative Agile development approach.
+```
+SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/careerpath_ai
+SPRING_DATASOURCE_USERNAME=root
+SPRING_DATASOURCE_PASSWORD=root
+SPRING_JPA_HIBERNATE_DDL_AUTO=none
+```
 
-Team members will use GitHub for version control and Jira for project management, task assignment, and progress tracking.
+`ddl-auto=none` is intentional — the schema is managed by `schema_v2.sql`, not auto-generated by Hibernate, so entities should be mapped to match the existing tables rather than the other way around.
 
-Development will be organized into milestones with regular testing, code reviews, and continuous integration throughout the project lifecycle.
+## Entity Overview
 
----
+| Table | Purpose |
+|---|---|
+| `roles` | User role types (STUDENT, PROFESSIONAL, ADMIN) |
+| `users` | Registered user accounts |
+| `certifications` | Certifications earned by a user (issuer, dates, credential link) |
+| `careers` | Career paths/specializations (e.g. Data Science, Cybersecurity) |
+| `skills` | Master list of technical/soft skills |
+| `user_skills` | Skills a specific user currently has, with proficiency level |
+| `career_skills` | Skills required for a specific career, with importance level |
+| `roadmaps` | A generated learning roadmap for one user + one career |
+| `roadmap_steps` | Ordered milestones within a roadmap, each optionally tied to a skill |
+| `learning_resources` | Courses/docs/videos tied to a specific skill |
+| `progress_tracking` | Single source of truth for a user's status on each roadmap step |
+| `chat_history` | Message log for the AI Career Advisor chatbot |
 
-## Project Status
+## Relationships at a glance
 
-**Current Phase:** Planning & Repository Setup
+- A **user** has many **user_skills** and many **certifications**.
+- A **career** has many **career_skills** — this is how skill-gap analysis works: compare a user's `user_skills` against a career's `career_skills`.
+- A **roadmap** belongs to one user and one career, and has many **roadmap_steps**.
+- Each **roadmap_step** can reference a **skill** and has learning progress tracked in **progress_tracking**.
+- A **skill** can have many **learning_resources** attached to it.
 
-**Implementation Start Date:** Monday
+## Files
 
----
+| File | Description |
+|---|---|
+| `schema_v2.sql` | Full schema — run this first |
+| `seed_data.sql` | Sample careers/skills/mappings for local development *(coming soon)* |
 
-## Future Enhancements
+## Notes for the team
 
-* Resume Analysis
-* Job Matching System
-* Career Recommendation Quiz
-* Certification Suggestions
-* Advanced AI Career Coaching
-* Learning Analytics Dashboard
-* Personalized Career Readiness Score
-* Industry Trend Insights
-
----
-
-## Vision
-
-Our vision is to create a smart platform that helps individuals make informed career decisions, bridge skill gaps, and achieve their professional goals through personalized learning pathways and AI-powered guidance.
+- Enums (e.g. `status`, `proficiency_level`) are used instead of lookup tables for simplicity at this stage. If we need more flexibility later (e.g. adding new roles without a migration), we can revisit this.
+- `chat_history` persists AI Advisor conversations. If we decide the advisor should be stateless instead, this table can be dropped without affecting anything else.
+- Any schema changes should be proposed as a new versioned file (e.g. `schema_v3.sql`) rather than editing `schema_v2.sql` directly, so we keep a history of changes as the project evolves.
