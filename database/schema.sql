@@ -28,7 +28,7 @@ CREATE TABLE users (
 
     FOREIGN KEY (roleId)
         REFERENCES roles(id)
-        ON DELETE SET NULL
+       
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
@@ -61,12 +61,12 @@ CREATE TABLE career_skills (
     importance VARCHAR(20),
 
     FOREIGN KEY (careerId)
-        REFERENCES careers(id)
-        ON DELETE CASCADE,
+        REFERENCES careers(id),
+       
 
     FOREIGN KEY (skillId)
-        REFERENCES skills(id)
-        ON DELETE CASCADE,
+        REFERENCES skills(id),
+      
 
     UNIQUE (careerId, skillId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
