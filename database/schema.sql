@@ -9,59 +9,36 @@ USE careerpath_ai;
 -- ---------------------------------------------------------------------
 CREATE TABLE roles (
     id          INT AUTO_INCREMENT PRIMARY KEY,
-    name        VARCHAR(50) NOT NULL UNIQUE,
-    description VARCHAR(255),
-    createdAt   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    name        VARCHAR(50) NOT NULL,
+    description VARCHAR(255)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
 -- users
 -- ---------------------------------------------------------------------
 CREATE TABLE users (
-    id               INT AUTO_INCREMENT PRIMARY KEY,
-    firstname        VARCHAR(100) NOT NULL,
-    lastname         VARCHAR(100) NOT NULL,
-    email            VARCHAR(150) NOT NULL UNIQUE,
-    password         VARCHAR(255) NOT NULL,
-    experienceLevel  VARCHAR(50),
-    roleId           INT,
-    createdAt        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updatedAt        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    firstname       VARCHAR(100) NOT NULL,
+    lastname        VARCHAR(100) NOT NULL,
+    email           VARCHAR(150) NOT NULL UNIQUE,
+    password        VARCHAR(255) NOT NULL,
+    experienceLevel VARCHAR(50),
+    createdAt       DATETIME NOT NULL,
+    roleId          INT,
 
-    FOREIGN KEY (roleId) REFERENCES roles(id) ON DELETE SET NULL
+    FOREIGN KEY (roleId)
+        REFERENCES roles(id)
+        ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- certifications  (was missing — README documents it, schema.sql didn't have it)
--- ---------------------------------------------------------------------
-CREATE TABLE certifications (
-    id             INT AUTO_INCREMENT PRIMARY KEY,
-    userId         INT NOT NULL,
-    name           VARCHAR(150) NOT NULL,
-    issuer         VARCHAR(150),
-    issueDate      DATE,
-    expiryDate     DATE,
-    credentialUrl  VARCHAR(255),
-    createdAt      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- ---------------------------------------------------------------------
--- careers
 -- ---------------------------------------------------------------------
 CREATE TABLE careers (
-    id            INT AUTO_INCREMENT PRIMARY KEY,
-    title         VARCHAR(100) NOT NULL,
-    description   TEXT,
-    category      VARCHAR(100),
-    averageSalary DECIMAL(10,2),
-    demandLevel   VARCHAR(20) NOT NULL DEFAULT 'MEDIUM',
-    createdAt     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updatedAt     DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-    UNIQUE (title),
-    CONSTRAINT chk_careers_demandLevel CHECK (demandLevel IN ('LOW','MEDIUM','HIGH'))
+    id             INT AUTO_INCREMENT PRIMARY KEY,
+    title          VARCHAR(100) NOT NULL,
+    description    TEXT,
+    category       VARCHAR(100),
+    average_salary DECIMAL(10,2),
+    demand_level   VARCHAR(50)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
@@ -71,8 +48,7 @@ CREATE TABLE skills (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     name        VARCHAR(100) NOT NULL UNIQUE,
     description TEXT,
-    category    VARCHAR(100),
-    createdAt   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    category    VARCHAR(100)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
@@ -82,14 +58,17 @@ CREATE TABLE career_skills (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     careerId   INT NOT NULL,
     skillId    INT NOT NULL,
-    importance VARCHAR(20) NOT NULL DEFAULT 'MEDIUM',
-    createdAt  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    importance VARCHAR(20),
 
-    FOREIGN KEY (careerId) REFERENCES careers(id) ON DELETE CASCADE,
-    FOREIGN KEY (skillId) REFERENCES skills(id) ON DELETE CASCADE,
+    FOREIGN KEY (careerId)
+        REFERENCES careers(id)
+        ON DELETE CASCADE,
 
-    UNIQUE (careerId, skillId),
-    CONSTRAINT chk_career_skills_importance CHECK (importance IN ('LOW','MEDIUM','HIGH'))
+    FOREIGN KEY (skillId)
+        REFERENCES skills(id)
+        ON DELETE CASCADE,
+
+    UNIQUE (careerId, skillId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
@@ -116,12 +95,16 @@ CREATE TABLE roadmaps (
     userId    INT NOT NULL,
     careerId  INT NOT NULL,
     title     VARCHAR(150),
-    status    VARCHAR(50) NOT NULL DEFAULT 'NOT_STARTED',
-    createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    status    VARCHAR(50),
+    createdAt DATETIME NOT NULL,
 
-    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (careerId) REFERENCES careers(id) ON DELETE CASCADE
+    FOREIGN KEY (userId)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (careerId)
+        REFERENCES careers(id)
+        ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
@@ -184,16 +167,5 @@ CREATE TABLE progress_tracking (
                                        REFERENCES roadmap_steps(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- ---------------------------------------------------------------------
--- chat_history  (was missing — README documents the AI Advisor table)
--- ---------------------------------------------------------------------
-CREATE TABLE chat_history (
-    id        INT AUTO_INCREMENT PRIMARY KEY,
-    userId    INT NOT NULL,
-    sender    VARCHAR(10) NOT NULL,   -- 'USER' or 'AI'
-    message   TEXT NOT NULL,
-    createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
-    CONSTRAINT chk_chat_sender CHECK (sender IN ('USER','AI'))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
