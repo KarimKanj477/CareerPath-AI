@@ -195,11 +195,16 @@ VALUES
 
 
 INSERT INTO users
-(firstname, lastname, email, password, experienceLevel, roleId)
+(firstname, lastname, email, password, experienceLevel, createdAt, roleId)
 VALUES
-('Karim','Kanj','karim@example.com','$2a$10$replaceWithRealBcryptHash','Intermediate',2),
-('Ranim','Matar','ranim@example.com','$2a$10$replaceWithRealBcryptHash','Beginner',2),
-('Admin','System','admin@careerpath.ai','$2a$10$replaceWithRealBcryptHash','Advanced',3);
+('Karim', 'Kanj', 'karim@example.com',
+ '$2a$10$replaceWithRealBcryptHash', 'Intermediate', NOW(), 2),
+
+('Ranim', 'Matar', 'ranim@example.com',
+ '$2a$10$replaceWithRealBcryptHash', 'Beginner', NOW(), 2),
+
+('Admin', 'System', 'admin@careerpath.ai',
+ '$2a$10$replaceWithRealBcryptHash', 'Advanced', NOW(), 3);
 
 INSERT INTO user_skills (userId, skillId, level)
 VALUES
@@ -218,18 +223,32 @@ VALUES
 (1, 'Oracle Certified Associate, Java SE Programmer', 'Oracle', '2024-05-01', NULL, 'https://example.com/credential/123');
 
 INSERT INTO roadmaps
-(userId, careerId, title, status)
+(userId, careerId, title, status, createdAt)
 VALUES
-(1, 1, 'Become a Software Engineer', 'IN_PROGRESS');
+(1, 1, 'Become a Software Engineer', 'In Progress', NOW());
 
 INSERT INTO roadmap_steps
 (roadmapId, skillId, title, description, stepOrder, status)
 VALUES
-(1, 1, 'Learn Java Fundamentals','Study Java syntax, object-oriented programming, collections, and exception handling.',1,'COMPLETED'),
-(1, 2, 'Learn SQL','Practice creating databases, writing SQL queries, joins, and constraints.',2,'IN_PROGRESS'),
-(1, 4, 'Learn Spring Boot','Develop REST APIs and backend services using Spring Boot.',3,'NOT_STARTED'),
-(1, 3, 'Learn React','Build responsive frontend interfaces using React.',4,'NOT_STARTED'),
-(1, NULL, 'Build Full Stack Projects','Combine Spring Boot and React to develop complete web applications.',5,'NOT_STARTED');
+(1, 1, 'Learn Java Fundamentals',
+ 'Study Java syntax, object-oriented programming, collections, and exception handling.',
+ 1, 'Completed'),
+
+(1, 2, 'Learn SQL',
+ 'Practice creating databases, writing SQL queries, joins, and constraints.',
+ 2, 'In Progress'),
+
+(1, 4, 'Learn Spring Boot',
+ 'Develop REST APIs and backend services using Spring Boot.',
+ 3, 'Not Started'),
+
+(1, 3, 'Learn React',
+ 'Build responsive frontend interfaces using React.',
+ 4, 'Not Started'),
+
+(1, NULL, 'Build Full Stack Projects',
+ 'Combine Spring Boot and React to develop complete web applications.',
+ 5, 'Not Started');
 
 INSERT INTO learning_resources
 (skillId, title, url, type, provider, isFree)
