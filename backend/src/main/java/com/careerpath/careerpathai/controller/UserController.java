@@ -5,6 +5,7 @@ import com.careerpath.careerpathai.dto.ApiResponse;
 import com.careerpath.careerpathai.dto.UserRequestDTO;
 import com.careerpath.careerpathai.dto.UserResponseDTO;
 import com.careerpath.careerpathai.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
 
     private final UserService userService;

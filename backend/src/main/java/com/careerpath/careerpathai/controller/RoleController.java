@@ -2,6 +2,7 @@ package com.careerpath.careerpathai.controller;
 
 import com.careerpath.careerpathai.entity.Role;
 import com.careerpath.careerpathai.service.RoleService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 @RestController //handles HTTP requests
 @RequestMapping("/api/roles")
+@SecurityRequirement(name = "bearerAuth")
 public class RoleController {
 
     private final RoleService roleService;

@@ -16,6 +16,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 public class SecurityConfig {
@@ -77,11 +78,9 @@ public class SecurityConfig {
                         .authenticationEntryPoint(authenticationEntryPoint)
                         .accessDeniedHandler(accessDeniedHandler)
                 )
-
-
                 .authorizeHttpRequests(auth -> auth
 
-                        // Public authentication endpoints
+                        // Public authentication and Swagger endpoints
                         .requestMatchers(
                                 "/api/auth/**",
                                 "/swagger-ui/**",
@@ -89,15 +88,42 @@ public class SecurityConfig {
                                 "/v3/api-docs/**"
                         ).permitAll()
 
-                        // A valid JWT is required
+                        // Public read-only catalog endpoints
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/skills/**",
+                                "/api/careers/**"
+                        ).permitAll()
+
+                        // Administrative management
                         .requestMatchers("/api/users/**")
                         .hasRole("ADMIN")
 
-                        // A valid JWT is required for user skills
+                        .requestMatchers("/api/roles/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/skills/**",
+                                "/api/careers/**"
+                        ).hasRole("ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/skills/**",
+                                "/api/careers/**"
+                        ).hasRole("ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/skills/**",
+                                "/api/careers/**"
+                        ).hasRole("ADMIN")
+
+                        // Authenticated user functionality
                         .requestMatchers("/api/user-skills/**")
                         .authenticated()
 
-                        // Authenticated career recommendations
                         .requestMatchers("/api/recommendations/**")
                         .authenticated()
 
@@ -107,10 +133,13 @@ public class SecurityConfig {
                         .requestMatchers("/api/progress/**")
                         .authenticated()
 
-                        // Other modules remain temporarily public
+                        // Any future endpoint requires authentication by default
                         .anyRequest()
-                        .permitAll()
+                        .authenticated()
                 )
+
+
+
 
                 // Execute the JWT filter before Spring's login filter
                 .addFilterBefore(

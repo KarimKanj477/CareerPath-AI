@@ -4,6 +4,7 @@ import com.careerpath.careerpathai.dto.ApiResponse;
 import com.careerpath.careerpathai.dto.SkillRequestDTO;
 import com.careerpath.careerpathai.dto.SkillResponseDTO;
 import com.careerpath.careerpathai.service.SkillService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/skills")
+@SecurityRequirement(name = "bearerAuth")
 public class SkillController {
 
     private final SkillService skillService;
@@ -44,6 +46,7 @@ public class SkillController {
     }
 
     @PostMapping
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ApiResponse<SkillResponseDTO>> createSkill(
             @Valid @RequestBody SkillRequestDTO requestDTO) {
 
@@ -55,6 +58,7 @@ public class SkillController {
     }
 
     @PutMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ApiResponse<SkillResponseDTO>> updateSkill(@PathVariable Integer id,
                                                                      @Valid @RequestBody SkillRequestDTO requestDTO) {
 
@@ -69,6 +73,7 @@ public class SkillController {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ApiResponse<Object>> deleteSkill(
             @PathVariable Integer id) {
 

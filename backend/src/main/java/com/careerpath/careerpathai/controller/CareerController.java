@@ -3,6 +3,7 @@ package com.careerpath.careerpathai.controller;
 import com.careerpath.careerpathai.dto.ApiResponse;
 import com.careerpath.careerpathai.entity.Career;
 import com.careerpath.careerpathai.service.CareerService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/careers")
+@SecurityRequirement(name = "bearerAuth")
 public class CareerController {
 
     private final CareerService careerService;
@@ -48,6 +50,7 @@ public class CareerController {
     }
 
     @GetMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ApiResponse<CareerResponseDTO>> getCareerById(
             @PathVariable Integer id) {
 
@@ -69,6 +72,7 @@ public class CareerController {
     }
 
     @PostMapping
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ApiResponse<CareerResponseDTO>> createCareer(
             @Valid @RequestBody CareerRequestDTO requestDTO) {
 
@@ -98,6 +102,7 @@ public class CareerController {
     }
 
     @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ApiResponse<Object>> deleteCareer(
             @PathVariable Integer id) {
 
