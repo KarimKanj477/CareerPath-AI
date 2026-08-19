@@ -36,8 +36,10 @@ function Navbar() {
                         </NavLink>
 
                         <span className="navbar-user">
-                            {user?.firstname || user?.email || "User"}
+                            {user?.firstname ? user.firstname.charAt(0).toUpperCase() +
+                                user.firstname.slice(1).toLowerCase() : user?.email || "User"}
                         </span>
+
 
                         <button
                             type="button"

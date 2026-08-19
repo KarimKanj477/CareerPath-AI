@@ -195,10 +195,15 @@
 }
 
 .roadmap-resource a {
+    color: #2563eb;
     font-size: 14px;
     font-weight: 600;
     text-decoration: none;
     white-space: nowrap;
+}
+
+.roadmap-resource a:hover {
+    text-decoration: underline;
 }
 
 @media (max-width: 700px) {

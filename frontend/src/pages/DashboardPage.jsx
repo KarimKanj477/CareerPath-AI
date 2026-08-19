@@ -4,8 +4,24 @@ import { Link } from "react-router-dom"
 function DashboardPage() {
     const { user } = useAuth()
 
+    const capitalizeName = (value) => {
+        if (!value) return ""
+
+        return value
+            .split(" ")
+            .map(
+                (word) =>
+                    word.charAt(0).toUpperCase() +
+                    word.slice(1).toLowerCase()
+            )
+            .join(" ")
+    }
+
     const fullName =
-        [user?.firstname, user?.lastname]
+        [
+            capitalizeName(user?.firstname),
+            capitalizeName(user?.lastname)
+        ]
             .filter(Boolean)
             .join(" ") ||
         user?.email ||
@@ -19,8 +35,8 @@ function DashboardPage() {
                 <h1>Welcome, {fullName}</h1>
 
                 <p>
-                    Complete your profile, manage your skills and receive
-                    personalized career recommendations.
+                    Manage your skills, explore career recommendations and
+                    follow your personalized learning roadmap.
                 </p>
             </section>
 
@@ -28,16 +44,6 @@ function DashboardPage() {
                 className="dashboard-grid"
                 aria-label="CareerPath tools"
             >
-                <article className="dashboard-card">
-                    <h2>Career Profile</h2>
-
-                    <p>
-                        Add your experience level, interests and career goals.
-                    </p>
-
-                    <span>Profile module coming soon</span>
-                </article>
-
                 <Link
                     to="/skills"
                     className="dashboard-card dashboard-card-link"
@@ -45,25 +51,26 @@ function DashboardPage() {
                     <h2>My Skills</h2>
 
                     <p>
-                        Add your current skills and track the skills you need
-                        to improve.
+                        Add and manage your current skills and experience
+                        levels.
                     </p>
 
                     <span>Open My Skills →</span>
                 </Link>
 
-                <article className="dashboard-card">
+                <Link
+                    to="/recommendations"
+                    className="dashboard-card dashboard-card-link"
+                >
                     <h2>Career Recommendations</h2>
 
                     <p>
-                        Discover careers that match your profile and technical
-                        abilities.
+                        Discover careers that match your current skills and
+                        identify the skills you still need.
                     </p>
 
-                    <Link to="/recommendations">
-                        View Career Recommendations →
-                    </Link>
-                </article>
+                    <span>View Recommendations →</span>
+                </Link>
 
                 <Link
                     to="/roadmaps"
@@ -72,11 +79,25 @@ function DashboardPage() {
                     <h2>Learning Roadmap</h2>
 
                     <p>
-                        Follow a personalized roadmap to prepare for your
-                        selected career.
+                        Follow personalized learning steps for your selected
+                        career.
                     </p>
 
                     <span>Open My Roadmaps →</span>
+                </Link>
+
+                <Link
+                    to="/roadmaps"
+                    className="dashboard-card dashboard-card-link"
+                >
+                    <h2>Progress Tracking</h2>
+
+                    <p>
+                        Track your learning progress and complete each roadmap
+                        step toward your career goal.
+                    </p>
+
+                    <span>View My Progress →</span>
                 </Link>
             </section>
         </main>

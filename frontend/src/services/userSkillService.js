@@ -14,7 +14,17 @@ async function sendAuthenticatedRequest(
         },
     })
 
-    const responseData = await response.json()
+    const responseData = await response
+        .json()
+        .catch(() => ({}))
+
+    if (response.status === 401) {
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
+
+        window.location.href = "/login"
+        return
+    }
 
     if (!response.ok) {
         throw new Error(

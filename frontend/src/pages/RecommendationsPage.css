@@ -161,24 +161,37 @@
         font-size: 28px;
     }
 }
-.recommendations-skills-link {
-    display: inline-block;
-    margin-top: 14px;
-    font-weight: 600;
-    text-decoration: none;
-}
+
 .recommendation-actions {
     margin-top: 20px;
     display: flex;
     justify-content: flex-end;
 }
 
+.recommendations-skills-link {
+    display: inline-block;
+    margin-top: 14px;
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.recommendations-skills-link:hover {
+    text-decoration: underline;
+}
+
 .generate-roadmap-button {
     padding: 10px 18px;
     border: none;
     border-radius: 8px;
+    background-color: #2563eb;
+    color: white;
     cursor: pointer;
     font-weight: 600;
+}
+
+.generate-roadmap-button:hover:not(:disabled) {
+    background-color: #1d4ed8;
 }
 
 .generate-roadmap-button:disabled {
