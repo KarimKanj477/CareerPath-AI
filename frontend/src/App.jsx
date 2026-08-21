@@ -12,6 +12,8 @@ import PublicRoute from "./routes/PublicRoute"
 import MySkillsPage from "./pages/MySkillsPage"
 import RecommendationsPage from "./pages/RecommendationsPage"
 import RoadmapsPage from "./pages/RoadmapsPage"
+import AdminPage from "./pages/AdminPage"
+import AdminRoute from "./routes/AdminRoute"
 
 function App() {
     return (
@@ -72,6 +74,16 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <RoadmapsPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/admin"
+                    element={
+                        <ProtectedRoute>
+                            <AdminRoute>
+                                <AdminPage />
+                            </AdminRoute>
                         </ProtectedRoute>
                     }
                 />

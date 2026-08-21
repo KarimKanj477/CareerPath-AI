@@ -10,7 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.careerpath.careerpathai.dto.UpdateUserRoleRequestDTO;
 import java.util.List;
 
 @RestController
@@ -60,17 +60,40 @@ public class UserController {
 
         UserResponseDTO updatedUser = userService.updateUser(id, requestDTO);
 
-        ApiResponse<UserResponseDTO> response = new ApiResponse<>(true, "User updated successfully.",
+        ApiResponse<UserResponseDTO> response =
+                new ApiResponse<>(true, "User updated successfully.",
                 updatedUser);
 
         return ResponseEntity.ok(response);
     }
+    @PatchMapping("/{id}/role")
+    public ResponseEntity<ApiResponse<UserResponseDTO>> updateUserRole(
+            @PathVariable Integer id,
+            @Valid @RequestBody UpdateUserRoleRequestDTO requestDTO) {
+
+        UserResponseDTO updatedUser =
+                userService.updateUserRole(
+                        id,
+                        requestDTO.getRoleId()
+                );
+
+        ApiResponse<UserResponseDTO> response =
+                new ApiResponse<>(
+                        true,
+                        "User role updated successfully.",
+                        updatedUser
+                );
+
+        return ResponseEntity.ok(response);
+    }
+
     @DeleteMapping("/{id}")
 
     public  ResponseEntity<ApiResponse<Object>>deleteUser(@PathVariable Integer id){
 
         userService.deleteUser(id);
-        ApiResponse<Object> response= new ApiResponse<>(true,"User deleted successfully",null);
+        ApiResponse<Object> response=
+                new ApiResponse<>(true,"User deleted successfully",null);
 
         return ResponseEntity.ok(response);
 
@@ -80,7 +103,8 @@ public class UserController {
     public ResponseEntity<ApiResponse<UserResponseDTO>> getUserByEmail(@PathVariable String email) {
 
         UserResponseDTO userResponse = userService.getUserByEmail(email);
-        ApiResponse<UserResponseDTO> response = new ApiResponse<>(true, "User retrieved successfully.", userResponse);
+        ApiResponse<UserResponseDTO> response =
+                new ApiResponse<>(true, "User retrieved successfully.", userResponse);
 
         return ResponseEntity.ok(response);
     }

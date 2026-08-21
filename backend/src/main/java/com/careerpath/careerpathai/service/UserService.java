@@ -15,6 +15,8 @@ public interface UserService {
 
     UserResponseDTO updateUser(Integer id,UserRequestDTO requestDTO);
 
+    UserResponseDTO updateUserRole(Integer id, Integer roleId);
+
     void deleteUser(Integer id);
 
     UserResponseDTO getUserByEmail(String email);

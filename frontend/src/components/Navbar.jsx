@@ -34,11 +34,20 @@ function Navbar() {
                         <NavLink to="/roadmaps">
                             My Roadmaps
                         </NavLink>
+                        {user?.roleName === "Admin" && (
+                            <NavLink to="/admin">
+                                Admin
+                            </NavLink>
+                        )}
 
                         <span className="navbar-user">
-                            {user?.firstname ? user.firstname.charAt(0).toUpperCase() +
-                                user.firstname.slice(1).toLowerCase() : user?.email || "User"}
-                        </span>
+                            {user?.firstname
+                                ?   user.firstname.charAt(0).toUpperCase() +
+                                    user.firstname.slice(1).toLowerCase()
+                                  : user?.email || "User"}
+
+                            {user?.roleName && ` · ${user.roleName}`}
+</span>
 
 
                         <button

@@ -124,6 +124,19 @@ public class UserServiceImpl implements UserService {
 
         return mapToResponseDTO(updatedUser);
     }
+    @Override
+    public UserResponseDTO updateUserRole(Integer id, Integer roleId) {
+
+        User existingUser = getUserEntityById(id);
+
+        Role role = getRoleEntityById(roleId);
+
+        existingUser.setRole(role);
+
+        User updatedUser = userRepository.save(existingUser);
+
+        return mapToResponseDTO(updatedUser);
+    }
 
     @Override
     public void deleteUser(Integer id) {
