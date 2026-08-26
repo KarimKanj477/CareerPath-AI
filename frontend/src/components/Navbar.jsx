@@ -35,9 +35,14 @@ function Navbar() {
                             Compare Careers
                         </NavLink>
 
+                        <NavLink to="/skill-gap-analysis">
+                            Skill Gaps
+                        </NavLink>
+
                         <NavLink to="/roadmaps">
                             My Roadmaps
                         </NavLink>
+
                         {user?.roleName === "Admin" && (
                             <NavLink to="/admin">
                                 Admin

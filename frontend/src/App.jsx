@@ -15,6 +15,7 @@ import RoadmapsPage from "./pages/RoadmapsPage"
 import AdminPage from "./pages/AdminPage"
 import AdminRoute from "./routes/AdminRoute"
 import CareerComparisonPage from "./pages/CareerComparisonPage"
+import SkillGapAnalysisPage from "./pages/SkillGapAnalysisPage"
 
 function App() {
     return (
@@ -74,6 +75,15 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <CareerComparisonPage />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/skill-gap-analysis"
+                    element={
+                        <ProtectedRoute>
+                            <SkillGapAnalysisPage />
                         </ProtectedRoute>
                     }
                 />
