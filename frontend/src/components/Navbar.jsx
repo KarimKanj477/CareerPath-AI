@@ -31,6 +31,10 @@ function Navbar() {
                             Recommendations
                         </NavLink>
 
+                        <NavLink to="/career-comparison">
+                            Compare Careers
+                        </NavLink>
+
                         <NavLink to="/roadmaps">
                             My Roadmaps
                         </NavLink>

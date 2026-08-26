@@ -1,0 +1,216 @@
+.career-comparison-page {
+    width: min(1100px, 90%);
+    margin: 0 auto;
+    padding: 48px 0;
+}
+
+.career-comparison-header {
+    margin-bottom: 32px;
+}
+
+.career-comparison-label {
+    margin-bottom: 8px;
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.career-comparison-header h1 {
+    margin: 0 0 12px;
+    font-size: 2rem;
+    color: #111827;
+}
+
+.career-comparison-header p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.career-comparison-selectors {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+}
+
+.career-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.career-selector label {
+    font-weight: 600;
+    color: #374151;
+}
+
+.career-selector select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #ffffff;
+    font-size: 1rem;
+}
+
+.comparison-ready-message {
+    margin-top: 20px;
+    padding: 14px 16px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    color: #166534;
+    font-weight: 600;
+}
+
+@media (max-width: 700px) {
+    .career-comparison-selectors {
+        grid-template-columns: 1fr;
+    }
+}
+.career-comparison-results {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 28px;
+}
+
+.career-comparison-card {
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+}
+
+.comparison-card-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.comparison-card-header h2 {
+    margin: 6px 0 0;
+    color: #111827;
+}
+
+.comparison-career-category {
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.comparison-match-score {
+    min-width: 85px;
+    text-align: center;
+}
+
+.comparison-match-score strong {
+    display: block;
+    color: #2563eb;
+    font-size: 1.6rem;
+}
+
+.comparison-match-score span {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+.comparison-description {
+    margin: 20px 0;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+.comparison-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+    color: #4b5563;
+}
+
+.comparison-skill-section {
+    margin-top: 22px;
+}
+
+.comparison-skill-section h3 {
+    margin-bottom: 12px;
+    color: #111827;
+    font-size: 1rem;
+}
+
+.comparison-skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.comparison-skill-tag {
+    padding: 7px 10px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.comparison-skill-tag.matched {
+    background: #ecfdf5;
+    color: #047857;
+}
+
+.comparison-skill-tag.missing {
+    background: #fef2f2;
+    color: #b91c1c;
+}
+
+@media (max-width: 800px) {
+    .career-comparison-results {
+        grid-template-columns: 1fr;
+    }
+}
+
+.best-match-badge {
+    display: inline-block;
+    margin-bottom: 16px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.comparison-insight {
+    margin-top: 24px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+}
+
+.comparison-insight-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2563eb;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.comparison-insight h2 {
+    margin: 0 0 10px;
+    color: #111827;
+    font-size: 1.25rem;
+}
+
+.comparison-insight p {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.6;
+}

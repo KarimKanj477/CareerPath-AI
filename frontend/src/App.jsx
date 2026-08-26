@@ -14,6 +14,7 @@ import RecommendationsPage from "./pages/RecommendationsPage"
 import RoadmapsPage from "./pages/RoadmapsPage"
 import AdminPage from "./pages/AdminPage"
 import AdminRoute from "./routes/AdminRoute"
+import CareerComparisonPage from "./pages/CareerComparisonPage"
 
 function App() {
     return (
@@ -65,6 +66,14 @@ function App() {
                     element={
                         <ProtectedRoute>
                             <RecommendationsPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/career-comparison"
+                    element={
+                        <ProtectedRoute>
+                            <CareerComparisonPage />
                         </ProtectedRoute>
                     }
                 />
